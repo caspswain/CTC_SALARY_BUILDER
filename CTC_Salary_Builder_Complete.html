@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTC Salary Structure Builder — FY 2025-26 / 2026-27</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Contractor Toolkit v9 palette */
+  --bg:#0d1117;
+  --surf:#161b22;
+  --surf2:#1c2330;
+  --bdr:#30363d;
+  --bdr2:#21262d;
+  --navy:#1a2744;
+  --navy2:#243352;
+  --emerald:#10b981;
+  --emerald2:#059669;
+  --gold:#f59e0b;
+  --gold2:#d97706;
+  --txt:#e6edf3;
+  --txt2:#c9d1d9;
+  --mut:#8b949e;
+  --red:#f85149;
+  --blue:#58a6ff;
+  --purple:#d2a8ff;
+  --card:#161b22;
+  --card2:#1c2330;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh;
+  background-image:
+    radial-gradient(ellipse at 0% 0%,rgba(16,185,129,.06) 0%,transparent 50%),
+    radial-gradient(ellipse at 100% 100%,rgba(26,39,68,.5) 0%,transparent 50%)}
+
+/* ── HEADER ── */
+header{padding:0 28px;height:60px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;
+  gap:14px;background:rgba(13,17,23,.95);backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:200}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--emerald),var(--emerald2));
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:16px;color:#fff;font-family:'Playfair Display',serif;flex-shrink:0}
+header h1{font-family:'Playfair Display',serif;font-size:17px;color:var(--txt);line-height:1.2;font-weight:600}
+header h1 small{font-size:10px;color:var(--mut);font-family:'Inter',sans-serif;font-weight:400;display:block;margin-top:1px}
+.firm-badge{margin-left:auto;text-align:right}
+.firm-badge .fn{font-size:12px;font-weight:600;color:var(--gold);margin-bottom:4px}
+.fc-links{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.fc-link{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;
+  padding:3px 10px;border-radius:20px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.fc-phone{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);color:var(--emerald)}
+.fc-wa{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:#25d366}
+.fc-mail{background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.25);color:var(--blue)}
+.fc-web{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:var(--gold)}
+
+/* ── TABS ── */
+.tabs{display:flex;padding:0 24px;gap:2px;border-bottom:1px solid var(--bdr);
+  background:rgba(13,17,23,.9);backdrop-filter:blur(6px);position:sticky;top:60px;z-index:199;height:44px;align-items:flex-end}
+.tab{padding:8px 18px;background:transparent;border:none;border-bottom:2px solid transparent;
+  color:var(--mut);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer;
+  transition:all .2s;border-radius:5px 5px 0 0;height:100%}
+.tab:hover{color:var(--txt);background:rgba(48,54,61,.4)}
+.tab.on{color:var(--emerald);border-bottom-color:var(--emerald);background:rgba(16,185,129,.05)}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1200px;margin:0 auto;padding:20px 18px;display:grid;
+  grid-template-columns:340px 1fr;gap:20px}
+.panel{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.ph{padding:13px 18px;border-bottom:1px solid var(--bdr2);display:flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,var(--surf2),var(--surf))}
+.ph-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.ph h2{font-size:13px;font-weight:600;color:var(--txt)} .ph p{font-size:10px;color:var(--mut);margin-top:1px}
+.pb{padding:18px}
+
+/* ── FORM ── */
+.fg{margin-bottom:14px}
+label{display:block;font-size:10px;font-weight:600;color:var(--mut);text-transform:uppercase;
+  letter-spacing:.7px;margin-bottom:5px}
+input,select{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:7px;
+  padding:9px 12px;font-family:'Inter',sans-serif;font-size:13px;color:var(--txt);outline:none;
+  transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{border-color:var(--emerald);box-shadow:0 0 0 3px rgba(16,185,129,.12)}
+select option{background:var(--surf2)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pfx{position:relative}
+.pfx span{position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  color:var(--gold);font-weight:700;font-size:14px;pointer-events:none}
+.pfx input{padding-left:26px}
+.tr-tog{display:flex;background:var(--surf2);border:1px solid var(--bdr);border-radius:7px;overflow:hidden}
+.tr-tog button{flex:1;padding:8px;background:transparent;border:none;color:var(--mut);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
+.tr-tog button.on{background:var(--emerald2);color:#fff}
+.trow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bdr2)}
+.trow:last-child{border-bottom:none}
+.tl{font-size:12px;font-weight:500;color:var(--txt2)} .ts{font-size:10px;color:var(--mut);margin-top:1px}
+.tog{position:relative;width:36px;height:20px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.sl{position:absolute;cursor:pointer;inset:0;background:var(--bdr);border-radius:20px;transition:.3s}
+.sl::before{content:'';position:absolute;width:14px;height:14px;left:3px;bottom:3px;
+  background:#fff;border-radius:50%;transition:.3s}
+input:checked+.sl{background:var(--emerald2)}
+input:checked+.sl::before{transform:translateX(16px)}
+.gen-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--emerald),var(--emerald2));
+  border:none;border-radius:8px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;
+  font-weight:600;cursor:pointer;margin-top:6px;transition:all .2s;letter-spacing:.2px}
+.gen-btn:hover{opacity:.88;transform:translateY(-1px)}
+
+/* ── OUTPUT ── */
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 20px;color:var(--mut);text-align:center;gap:12px}
+.placeholder .pi{font-size:42px;opacity:.25}
+.placeholder p{font-size:13px;line-height:1.8;color:var(--mut)}
+.out{display:none} .out.show{display:block}
+
+/* Summary Cards */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.card{background:var(--surf2);border:1px solid var(--bdr2);border-radius:9px;padding:12px;text-align:center}
+.card .cv{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;margin-bottom:3px}
+.card .ck{font-size:9px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
+.cg{color:var(--emerald)} .cy{color:var(--gold)} .cb{color:var(--blue)} .cr{color:var(--red)}
+
+/* Employee strip */
+.strip{background:var(--surf2);border:1px solid var(--bdr2);border-radius:8px;
+  padding:11px 14px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:14px}
+.strip .si{flex:1;min-width:90px}
+.strip .sk{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut)}
+.strip .sv{font-size:12px;font-weight:600;margin-top:2px;color:var(--txt2)}
+
+/* Section label */
+.sec{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;
+  color:var(--mut);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:var(--bdr2)}
+
+/* Table */
+.bt{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:12px}
+.bt th{text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--mut);padding:6px 9px;border-bottom:1px solid var(--bdr)}
+.bt th:nth-child(3),.bt th:nth-child(4){text-align:right}
+.bt td{padding:9px 9px;border-bottom:1px solid var(--bdr2);color:var(--txt2)}
+.bt td:nth-child(3),.bt td:nth-child(4){text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:var(--txt)}
+.bt .tot td{font-weight:700;font-size:13px;background:rgba(245,158,11,.06);
+  border-top:1px solid rgba(245,158,11,.25);color:var(--gold)}
+.bt .ded td:nth-child(3),.bt .ded td:nth-child(4){color:var(--red)}
+.bt .net td{font-weight:700;font-size:14px;background:rgba(16,185,129,.08);
+  border-top:1px solid rgba(16,185,129,.25);color:var(--emerald)}
+
+/* Notes */
+.notes{background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.15);
+  border-radius:8px;padding:12px 14px;font-size:11px;color:var(--mut);
+  line-height:1.85;margin-bottom:16px}
+.notes strong{color:var(--gold)}
+
+/* ── EXPORT BUTTONS ── */
+.export-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.xbtn{padding:10px 6px;border-radius:8px;border:1px solid;font-family:'Inter',sans-serif;
+  font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:5px}
+.xbtn:hover{transform:translateY(-1px)}
+.xb-print{background:rgba(255,255,255,.04);border-color:var(--bdr);color:var(--txt2)}
+.xb-excel{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:var(--emerald)}
+.xb-word{background:rgba(88,166,255,.1);border-color:rgba(88,166,255,.3);color:var(--blue)}
+.xb-copy{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:var(--gold)}
+
+/* ── COMPLIANCE TAB ── */
+.comp-wrap{max-width:1200px;margin:0 auto;padding:20px 18px;display:grid;
+  grid-template-columns:1fr 1fr;gap:14px}
+.ccard{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:16px}
+.ccard h3{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:12px;
+  text-transform:uppercase;letter-spacing:.5px}
+.ct{width:100%;border-collapse:collapse;font-size:11px}
+.ct th{text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--mut);padding:5px 7px;border-bottom:1px solid var(--bdr2)}
+.ct td{padding:7px 7px;border-bottom:1px solid var(--bdr2);color:var(--txt2)}
+.pt-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.pt-row{background:var(--surf2);border:1px solid var(--bdr2);border-radius:7px;
+  padding:8px 11px;display:flex;justify-content:space-between;align-items:center}
+.pt-row .pr{font-size:10px;color:var(--mut)} .pt-row .pa{font-size:12px;font-weight:700;color:var(--gold)}
+.slab2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slab2 h4{font-size:10px;font-weight:700;margin-bottom:7px}
+
+/* ── QUICK CALC TAB ── */
+.qc-wrap{max-width:1200px;margin:0 auto;padding:20px 18px;display:grid;
+  grid-template-columns:1fr 1fr;gap:14px}
+.qcard{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:16px}
+.qcard h3{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:12px;
+  text-transform:uppercase;letter-spacing:.5px}
+.qres{margin-top:10px;padding:12px;background:var(--surf2);border:1px solid var(--bdr2);
+  border-radius:7px;font-size:12px;color:var(--mut);line-height:2}
+
+/* Loading */
+.loader{display:none;position:fixed;inset:0;background:rgba(13,17,23,.9);z-index:999;
+  align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.loader.show{display:flex}
+.spin{width:44px;height:44px;border:3px solid var(--bdr);border-top-color:var(--emerald);
+  border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loader p{font-size:13px;color:var(--txt2)}
+
+/* footer */
+.site-footer{border-top:1px solid var(--bdr);background:rgba(13,17,23,.97);padding:20px 32px;margin-top:40px}
+.site-footer .ft-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:16px}
+.site-footer .ft-left .firm-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);font-weight:600}
+.site-footer .ft-left .firm-tagline{font-size:11px;color:var(--mut);margin-top:3px}
+.site-footer .ft-left .firm-city{font-size:10px;color:#444d56;margin-top:2px}
+.site-footer .ft-right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ft-btn{display:inline-flex;align-items:center;gap:5px;text-decoration:none;font-size:11px;
+  font-weight:600;padding:7px 14px;border-radius:22px;transition:all .2s;white-space:nowrap}
+.ft-btn:hover{transform:translateY(-1px);filter:brightness(1.15)}
+.ft-wa{background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25d366}
+.ft-mail{background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);color:var(--blue)}
+.ft-web{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--gold)}
+.ft-copy{font-size:10px;color:#444d56;text-align:center;margin-top:12px;
+  max-width:1200px;margin:12px auto 0;padding-top:12px;border-top:1px solid var(--bdr2)}
+
+/* Print */
+@media print{
+  body{background:#fff;color:#000}
+  header,.tabs,.export-bar,.gen-btn,.left-panel,.xbtn,.site-footer{display:none!important}
+  .wrap{grid-template-columns:1fr;padding:0}
+  .panel{border:1px solid #ccc;border-radius:0}
+  .strip,.card{background:#f5f5f5;border:1px solid #ddd}
+  .notes{border:1px solid #ccc;color:#444;background:#f9f9f9}
+  .bt td,.bt th{color:#000}
+}
+
+</style>
+</head>
+<body>
+
+<div class="loader" id="ldr"><div class="spin"></div><p id="lmsg">Please wait...</p></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">₹</div>
+  <div>
+    <h1>CTC Salary Structure Builder
+      <small>CTC Builder · FY 2025-26 & 2026-27 · Code on Wages · EPF · ESI · LWF · TDS</small>
+    </h1>
+  </div>
+  <div class="firm-badge">
+    <div class="fn">S P C A &amp; Co., Chartered Accountants</div>
+    <div class="fd">Bhubaneswar, Odisha</div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on" onclick="showTab('builder',this)">⚙️ CTC Builder</button>
+  <button class="tab" onclick="showTab('compliance',this)">⚖️ Statutory Reference</button>
+  <button class="tab" onclick="showTab('quickcalc',this)">🧮 Quick Calculator</button>
+</div>
+
+<!-- ══════════════════════════ BUILDER TAB ══════════════════════════ -->
+<div id="builder" class="wrap">
+
+  <!-- LEFT: INPUT -->
+  <div class="left-panel">
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-ic" style="background:rgba(245,158,11,.14)">👤</div>
+        <div><h2>Employee & CTC Details</h2><p>Fill all fields then click Generate</p></div>
+      </div>
+      <div class="pb">
+        <div class="fg"><label>Employee Full Name</label>
+          <input id="empName" placeholder="e.g. Ramesh Kumar Panda" type="text"></div>
+        <div class="fg"><label>Employee Address</label>
+          <input id="empAddr1" placeholder="Address Line 1 — House / Flat No., Street" type="text" style="margin-bottom:6px">
+          <input id="empAddr2" placeholder="City, State, PIN Code" type="text"></div>
+        <div class="r2">
+          <div class="fg"><label>UAN Number</label>
+            <input id="empUAN" placeholder="UAN (12 digits)" type="text" maxlength="12"></div>
+          <div class="fg"><label>PAN Number</label>
+            <input id="empPAN" placeholder="ABCDE1234F" type="text" maxlength="10" style="text-transform:uppercase"></div>
+        </div>
+        <div class="r2">
+          <div class="fg"><label>Bank Name</label>
+            <input id="empBank" placeholder="e.g. State Bank of India" type="text"></div>
+          <div class="fg"><label>Bank Account No.</label>
+            <input id="empAcc" placeholder="Account Number" type="text"></div>
+        </div>
+        <div class="fg"><label>Type of Employee <span style="font-size:9px;color:var(--emerald)">(New Labour Code)</span></label>
+          <select id="empType">
+            <option value="permanent">Permanent Employee</option>
+            <option value="fixedterm">Fixed Term Employee (FTE)</option>
+            <option value="contractlabour">Contract Labour (via Contractor)</option>
+            <option value="apprentice">Apprentice (Apprentices Act 1961)</option>
+            <option value="parttime">Part-Time Employee</option>
+            <option value="casual">Casual / Daily Wage Worker</option>
+          </select>
+          <div id="empTypeNote" style="font-size:10px;color:var(--mut);margin-top:5px;padding:5px 9px;
+            background:rgba(16,185,129,.06);border-radius:6px;border-left:2px solid var(--emerald)">
+            Permanent — full statutory benefits apply
+          </div>
+        </div>
+        <div class="r2">
+          <div class="fg"><label>Designation</label>
+            <input id="desig" placeholder="e.g. Accountant" type="text"></div>
+          <div class="fg"><label>Department</label>
+            <input id="dept" placeholder="e.g. Finance" type="text"></div>
+        </div>
+        <div class="r2">
+          <div class="fg"><label>Date of Joining</label>
+            <input id="doj" type="date"></div>
+          <div class="fg"><label>Salary Month</label>
+            <input id="smon" type="month"></div>
+        </div>
+        <div class="fg"><label>Annual CTC (₹)</label>
+          <div class="pfx"><span>₹</span>
+            <input id="ctc" placeholder="e.g. 600000" type="number" min="0"></div>
+        </div>
+        <div class="fg"><label>HRA City</label>
+          <select id="hraCity">
+            <option value="nm" selected>Non-Metro — 40% of Basic (Bhubaneswar, Cuttack…)</option>
+            <option value="m">Metro — 50% of Basic (Delhi, Mumbai, Chennai, Kolkata)</option>
+          </select>
+        </div>
+        <div class="fg"><label>Financial Year</label>
+          <div class="tr-tog">
+            <button id="fy25Btn" onclick="setFY('2526')">FY 2025-26</button>
+            <button class="on" id="fy26Btn" onclick="setFY('2627')">FY 2026-27</button>
+          </div>
+          <div id="fyNote" style="font-size:10px;color:var(--blue);margin-top:6px;padding:6px 10px;
+            background:rgba(16,185,129,.08);border-radius:6px;border-left:2px solid var(--blue)">
+            📌 <strong>FY 2026-27 (AY 2027-28):</strong> Slabs unchanged from FY 2025-26.
+            Income Tax Act 2025 in effect from 1 Apr 2026.
+          </div>
+        </div>
+        <div class="fg"><label>Income Tax Regime</label>
+          <div class="tr-tog">
+            <button class="on" id="nrBtn" onclick="setR('new')">🆕 New Regime (Default)</button>
+            <button id="orBtn" onclick="setR('old')">📋 Old Regime</button>
+          </div>
+        </div>
+        <div class="fg"><label>EPF / PF</label>
+          <select id="pf">
+            <option value="y">Applicable — 12% of Basic (cap ₹15,000)</option>
+            <option value="n">Not Applicable (Exempted establishment)</option>
+          </select>
+        </div>
+        <div class="fg"><label>ESI</label>
+          <select id="esi">
+            <option value="auto">Auto — Apply if Gross ≤ ₹21,000/month</option>
+            <option value="n">Not Applicable</option>
+          </select>
+        </div>
+        <div class="fg"><label>Gratuity in CTC</label>
+          <select id="grat">
+            <option value="y">Include — 4.81% of Basic</option>
+            <option value="n">Exclude</option>
+          </select>
+        </div>
+        <div class="fg"><label>Toggles</label>
+          <div class="trow">
+            <div><div class="tl">Labour Welfare Fund (Odisha)</div>
+              <div class="ts">Emp ₹5 + Employer ₹20 / month</div></div>
+            <label class="tog"><input type="checkbox" id="lwf" checked><span class="sl"></span></label>
+          </div>
+          <div class="trow">
+            <div><div class="tl">Medical Allowance</div>
+              <div class="ts">₹1,250/month — partly exempt</div></div>
+            <label class="tog"><input type="checkbox" id="med"><span class="sl"></span></label>
+          </div>
+          <div class="trow">
+            <div><div class="tl">Meal / Food Allowance</div>
+              <div class="ts">₹2,200/month</div></div>
+            <label class="tog"><input type="checkbox" id="meal"><span class="sl"></span></label>
+          </div>
+          <div class="trow" style="border:none">
+            <div><div class="tl">Children Education Allowance</div>
+              <div class="ts">₹200/month (₹100 × 2 children)</div></div>
+            <label class="tog"><input type="checkbox" id="cea"><span class="sl"></span></label>
+          </div>
+        </div>
+        <button class="gen-btn" onclick="generate()">⚡ Generate Salary Structure</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div>
+    <div class="panel" style="min-height:480px">
+      <div class="ph">
+        <div class="ph-ic" style="background:rgba(16,185,129,.14)">📊</div>
+        <div><h2>Salary Breakup Report</h2><p>Full CTC analysis with all statutory components</p></div>
+      </div>
+      <div class="pb">
+
+        <div class="placeholder" id="ph">
+          <div class="pi">📋</div>
+          <p>Enter employee details and click<br><strong>Generate Salary Structure</strong><br>to view full breakup, then download<br>Excel or Word with one click.</p>
+        </div>
+
+        <div class="out" id="out">
+
+          <!-- Export Bar -->
+          <div class="export-bar">
+            <button class="xbtn xb-print" onclick="window.print()">🖨️ Print / PDF</button>
+            <button class="xbtn xb-excel" onclick="dlExcel()">📗 Download Excel</button>
+            <button class="xbtn xb-word" onclick="dlWord()">📘 Download Word</button>
+            <button class="xbtn xb-copy" onclick="copySum()">📋 Copy Summary</button>
+          </div>
+
+          <!-- Employee strip -->
+          <div class="strip" id="estrip"></div>
+
+          <!-- Summary cards -->
+          <div class="cards3">
+            <div class="card"><div class="cv cy" id="c-ctc">—</div><div class="ck">Annual CTC</div></div>
+            <div class="card"><div class="cv cg" id="c-th">—</div><div class="ck">Monthly Take-Home</div></div>
+            <div class="card"><div class="cv cb" id="c-gr">—</div><div class="ck">Monthly Gross</div></div>
+          </div>
+          <div class="cards4">
+            <div class="card"><div class="cv cy" id="c-ba">—</div><div class="ck">Basic / month</div></div>
+            <div class="card"><div class="cv cb" id="c-hra">—</div><div class="ck">HRA / month</div></div>
+            <div class="card"><div class="cv cr" id="c-pf">—</div><div class="ck">Emp PF / month</div></div>
+            <div class="card"><div class="cv cr" id="c-tds">—</div><div class="ck">TDS / month</div></div>
+          </div>
+
+          <div class="sec">A — Earnings</div>
+          <table class="bt"><thead><tr><th>Component</th><th>Basis</th><th>Monthly ₹</th><th>Annual ₹</th></tr></thead>
+            <tbody id="earB"></tbody></table>
+
+          <div class="sec">B — Employee Deductions</div>
+          <table class="bt"><thead><tr><th>Component</th><th>Basis</th><th>Monthly ₹</th><th>Annual ₹</th></tr></thead>
+            <tbody id="dedB"></tbody></table>
+
+          <div class="sec">C — Employer CTC Components</div>
+          <table class="bt"><thead><tr><th>Component</th><th>Basis</th><th>Monthly ₹</th><th>Annual ₹</th></tr></thead>
+            <tbody id="erB"></tbody></table>
+
+          <div class="notes" id="notebox"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ COMPLIANCE TAB ══════════════════════════ -->
+<div id="compliance" style="display:none">
+<div class="comp-wrap">
+  <div class="ccard">
+    <h3>⚖️ Code on Wages, 2019</h3>
+    <table class="ct"><thead><tr><th>Rule</th><th>Requirement</th></tr></thead>
+    <tbody>
+      <tr><td>Basic + DA floor</td><td>≥ 50% of total remuneration</td></tr>
+      <tr><td>Payment schedule</td><td>Monthly — by 7th of following month</td></tr>
+      <tr><td>Overtime rate</td><td>2× normal wage</td></tr>
+      <tr><td>Wage revision</td><td>Floor wage revised every 5 years by Centre</td></tr>
+    </tbody></table>
+  </div>
+  <div class="ccard">
+    <h3>🏦 EPF & MP Act, 1952</h3>
+    <table class="ct"><thead><tr><th>Fund</th><th>Employee</th><th>Employer</th></tr></thead>
+    <tbody>
+      <tr><td>EPF</td><td>12%</td><td>3.67%</td></tr>
+      <tr><td>EPS</td><td>Nil</td><td>8.33% (max ₹1,250)</td></tr>
+      <tr><td>EDLI</td><td>Nil</td><td>0.5% (max ₹75)</td></tr>
+      <tr><td>Admin</td><td>Nil</td><td>0.5% (min ₹500)</td></tr>
+      <tr><td style="font-weight:700">Total</td><td>12%</td><td>~13%</td></tr>
+    </tbody></table>
+    <p style="font-size:10px;color:var(--mut);margin-top:8px">⚠️ Wage ceiling: ₹15,000/month. Mandatory if ≤ ₹15,000 basic.</p>
+  </div>
+  <div class="ccard">
+    <h3>🏥 ESI Act, 1948</h3>
+    <table class="ct"><thead><tr><th>Party</th><th>Rate</th><th>Threshold</th></tr></thead>
+    <tbody>
+      <tr><td>Employee</td><td>0.75%</td><td>Gross ≤ ₹21,000/mo</td></tr>
+      <tr><td>Employer</td><td>3.25%</td><td>Gross ≤ ₹21,000/mo</td></tr>
+      <tr><td><b>Total</b></td><td><b>4.00%</b></td><td>On gross wages</td></tr>
+    </tbody></table>
+  </div>
+  <div class="ccard">
+    <h3>🏛️ Professional Tax — Odisha</h3>
+    <div class="pt-grid">
+      <div class="pt-row"><span class="pr">Up to ₹5,000</span><span class="pa">NIL</span></div>
+      <div class="pt-row"><span class="pr">₹5,001–₹6,000</span><span class="pa">₹30/mo</span></div>
+      <div class="pt-row"><span class="pr">₹6,001–₹8,333</span><span class="pa">₹50/mo</span></div>
+      <div class="pt-row"><span class="pr">₹8,334–₹16,666</span><span class="pa">₹75/mo</span></div>
+      <div class="pt-row"><span class="pr">₹16,667–₹25,000</span><span class="pa">₹100/mo</span></div>
+      <div class="pt-row"><span class="pr">Above ₹25,000</span><span class="pa">₹200/mo</span></div>
+    </div>
+    <p style="font-size:10px;color:var(--mut);margin-top:8px">Max ₹2,400/yr. Deductible u/s 16 of IT Act.</p>
+  </div>
+  <div class="ccard">
+    <h3>🤝 Labour Welfare Fund — Odisha</h3>
+    <table class="ct"><thead><tr><th>Party</th><th>Amount</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>Employee</td><td>₹5/month</td><td>Monthly</td></tr>
+      <tr><td>Employer</td><td>₹20/month</td><td>Monthly</td></tr>
+      <tr><td><b>Total</b></td><td><b>₹25/month</b></td><td>To LWF Board</td></tr>
+    </tbody></table>
+    <p style="font-size:10px;color:var(--mut);margin-top:8px">Odisha Labour Welfare Fund Act, 1996.</p>
+  </div>
+  <div class="ccard" style="grid-column:1/-1">
+    <h3>🧾 Income Tax Slabs — FY 2025-26 & FY 2026-27 Comparison</h3>
+    <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;
+      padding:10px 14px;margin-bottom:14px;font-size:11px;color:#86efac;line-height:1.7">
+      ✅ <strong>Budget 2026 — No Change:</strong> Finance Minister kept all income tax slab rates, standard deductions,
+      and rebate limits <strong>identical</strong> for FY 2026-27 (AY 2027-28) as FY 2025-26 (AY 2026-27).
+      The only key change: <strong>Income Tax Act 2025</strong> replaces IT Act 1961 from 1 Apr 2026.
+      Revised ITR filing window extended to 12 months (was 9 months), with a nominal fee for late revised returns.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+      <!-- NEW REGIME — BOTH YEARS SAME -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:8px">
+          🆕 NEW REGIME — Default (FY 2025-26 & FY 2026-27 — Identical)
+        </div>
+        <table class="ct"><thead><tr><th>Income Slab</th><th>Tax Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Up to ₹4,00,000</td><td>NIL</td></tr>
+          <tr><td>₹4,00,001 – ₹8,00,000</td><td>5%</td></tr>
+          <tr><td>₹8,00,001 – ₹12,00,000</td><td>10%</td></tr>
+          <tr><td>₹12,00,001 – ₹16,00,000</td><td>15%</td></tr>
+          <tr><td>₹16,00,001 – ₹20,00,000</td><td>20%</td></tr>
+          <tr><td>₹20,00,001 – ₹24,00,000</td><td>25%</td></tr>
+          <tr><td>Above ₹24,00,000</td><td>30%</td></tr>
+        </tbody></table>
+        <div style="margin-top:8px;font-size:10px;line-height:1.8;color:var(--mut)">
+          ✅ Rebate u/s 87A: Zero tax if taxable ≤ <strong style="color:var(--emerald)">₹12,00,000</strong><br>
+          ✅ Standard Deduction (Salaried): <strong style="color:var(--emerald)">₹75,000</strong><br>
+          ✅ Gross salary up to <strong style="color:var(--emerald)">₹12,75,000</strong> effectively tax-free<br>
+          ✅ Max surcharge capped at <strong>25%</strong> under new regime
+        </div>
+      </div>
+
+      <!-- OLD REGIME — BOTH YEARS SAME -->
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:8px">
+          📋 OLD REGIME (FY 2025-26 & FY 2026-27 — Identical, unchanged for years)
+        </div>
+        <table class="ct"><thead><tr><th>Income Slab</th><th>Tax Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Up to ₹2,50,000</td><td>NIL</td></tr>
+          <tr><td>₹2,50,001 – ₹5,00,000</td><td>5%</td></tr>
+          <tr><td>₹5,00,001 – ₹10,00,000</td><td>20%</td></tr>
+          <tr><td>Above ₹10,00,000</td><td>30%</td></tr>
+        </tbody></table>
+        <div style="margin-top:8px;font-size:10px;line-height:1.8;color:var(--mut)">
+          ✅ Rebate u/s 87A: Zero tax if taxable ≤ <strong style="color:var(--blue)">₹5,00,000</strong><br>
+          ✅ Standard Deduction (Salaried): <strong style="color:var(--blue)">₹50,000</strong><br>
+          ✅ 80C deductions: up to <strong style="color:var(--blue)">₹1,50,000</strong><br>
+          ✅ 70+ deductions/exemptions available (HRA, LTA, 80D, 80E…)
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:rgba(16,185,129,.08);
+      border-radius:8px;font-size:10px;color:var(--mut);line-height:1.8">
+      <strong style="color:var(--emerald)">📌 Key FY 2026-27 Changes (Budget 2026):</strong><br>
+      • Income Tax Act <strong>2025</strong> replaces IT Act 1961 — effective 1 April 2026<br>
+      • Revised ITR filing extended to <strong>12 months</strong> (was 9 months) from end of tax year, with fee after 9 months<br>
+      • Fee for revised return: ₹5,000 (income > ₹5L) or ₹1,000 (income ≤ ₹5L)<br>
+      • Form 15G/15H can now be filed with depositories for dividend/interest TDS relief<br>
+      • + Health &amp; Education Cess: <strong>4%</strong> on income tax | Max surcharge (new regime): <strong>25%</strong>
+    </div>
+  </div>
+  <div class="ccard">
+    <h3>🏭 Gratuity — Payment of Gratuity Act, 1972</h3>
+    <table class="ct"><thead><tr><th>Parameter</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Eligibility</td><td>5 years continuous service</td></tr>
+      <tr><td>Formula</td><td>Basic × 15/26 × No. of years</td></tr>
+      <tr><td>CTC Provision</td><td>4.81% of Basic / month</td></tr>
+      <tr><td>Max Tax-Free</td><td>₹20,00,000</td></tr>
+      <tr><td>Applicability</td><td>≥ 10 employees</td></tr>
+    </tbody></table>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ QUICK CALC TAB ══════════════════════════ -->
+<div id="quickcalc" style="display:none">
+<div class="qc-wrap">
+  <div class="qcard">
+    <h3>🔄 CTC ↔ Take-Home Estimator</h3>
+    <div class="fg"><label>What do you know?</label>
+      <select id="qtype" onchange="qCalc()">
+        <option value="ctc">Annual CTC → Estimate Take-Home</option>
+        <option value="th">Monthly Take-Home → Estimate CTC</option>
+        <option value="gross">Annual Gross → Estimate CTC</option>
+      </select></div>
+    <div class="fg"><label>Amount (₹)</label>
+      <div class="pfx"><span>₹</span><input id="qamt" type="number" placeholder="600000" oninput="qCalc()"></div></div>
+    <div class="qres" id="qres">Enter amount above to see estimates.</div>
+  </div>
+  <div class="qcard">
+    <h3>🏦 EPF Breakdown Calculator</h3>
+    <div class="fg"><label>Basic Salary (₹/month)</label>
+      <div class="pfx"><span>₹</span><input id="epfB" type="number" placeholder="20000" oninput="epfCalc()"></div></div>
+    <div class="qres" id="epfRes">Enter basic salary above.</div>
+  </div>
+  <div class="qcard">
+    <h3>🏛️ Professional Tax Calculator (Odisha)</h3>
+    <div class="fg"><label>Gross Monthly Salary (₹)</label>
+      <div class="pfx"><span>₹</span><input id="ptG" type="number" placeholder="35000" oninput="ptCalc()"></div></div>
+    <div class="qres" id="ptRes">Enter gross salary above.</div>
+  </div>
+  <div class="qcard">
+    <h3>🏭 Gratuity Calculator</h3>
+    <div class="r2">
+      <div class="fg"><label>Basic (₹/month)</label>
+        <div class="pfx"><span>₹</span><input id="gB" type="number" placeholder="25000" oninput="gCalc()"></div></div>
+      <div class="fg"><label>Years of Service</label>
+        <input id="gY" type="number" placeholder="7" oninput="gCalc()"></div>
+    </div>
+    <div class="qres" id="gRes">Enter basic and years above.</div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   GLOBALS
+═══════════════════════════════════════════════════ */
+let regime = 'new';
+let fy = '2627';  // default FY 2026-27
+let D = null;
+
+const fi = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const fn = n => Math.round(n).toLocaleString('en-IN');
+const v = id => document.getElementById(id);
+
+/* ═══════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════ */
+function showTab(id, btn) {
+  ['builder','compliance','quickcalc'].forEach(t => {
+    const el = v(t);
+    if (el) el.style.display = 'none';
+  });
+  v(id).style.display = (id === 'builder') ? 'grid' : 'block';
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+}
+
+/* ═══════════════════════════════════════════════════
+   FY SELECTOR
+═══════════════════════════════════════════════════ */
+function setFY(f) {
+  fy = f;
+  v('fy25Btn').classList.toggle('on', f === '2526');
+  v('fy26Btn').classList.toggle('on', f === '2627');
+  const note = v('fyNote');
+  if (f === '2627') {
+    note.style.display = 'block';
+    note.innerHTML = '📌 <strong>FY 2026-27 (AY 2027-28):</strong> Slabs unchanged from FY 2025-26 (Budget 2026 — no changes). Income Tax Act 2025 in effect from 1 Apr 2026.';
+  } else {
+    note.style.display = 'block';
+    note.innerHTML = '📌 <strong>FY 2025-26 (AY 2026-27):</strong> New Regime — Std deduction ₹75,000. Rebate u/s 87A up to ₹12L. Old Regime — Std deduction ₹50,000.';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   REGIME
+═══════════════════════════════════════════════════ */
+function setR(r) {
+  regime = r;
+  v('nrBtn').classList.toggle('on', r === 'new');
+  v('orBtn').classList.toggle('on', r === 'old');
+}
+
+/* ═══════════════════════════════════════════════════
+   EMPLOYEE TYPE NOTE
+═══════════════════════════════════════════════════ */
+function empTypeChange() {
+  const t = v('empType').value;
+  const notes = {
+    permanent:    'Full statutory benefits — EPF, ESI, Gratuity, PT, LWF applicable as per thresholds.',
+    fixedterm:    'FTE: Same benefits as permanent employee. Gratuity payable proportionately even before 5 years (Code on Wages 2019).',
+    contractlabour:'Contract Labour: Statutory benefits via contractor. CLRA Act 1970 applies. CTC structure for reference only.',
+    apprentice:   'Apprentice: Stipend-based. EPF/ESI generally not applicable. Income Tax may apply on stipend.',
+    parttime:     'Part-Time: Benefits proportionate to hours worked. EPF if wages exceed threshold.',
+    casual:       'Casual / Daily Wage: Minimum wage as per Code on Wages. EPF/ESI applicable if on rolls.'
+  };
+  v('empTypeNote').textContent = notes[t] || '';
+}
+document.getElementById('empType').addEventListener('change', empTypeChange);
+
+/* ═══════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════ */
+function getPT(g) {
+  if (g <= 5000) return 0;
+  if (g <= 6000) return 30;
+  if (g <= 8333) return 50;
+  if (g <= 16666) return 75;
+  if (g <= 25000) return 100;
+  return 200;
+}
+
+function calcTDS(taxable, r, fyear) {
+  // Slabs are IDENTICAL for FY 2025-26 and FY 2026-27 (Budget 2026 made no changes)
+  // Standard deductions already applied before this function is called
+  let tax = 0;
+  if (r === 'new') {
+    // New Regime: 0-4L=0%, 4-8L=5%, 8-12L=10%, 12-16L=15%, 16-20L=20%, 20-24L=25%, >24L=30%
+    const sl = [[400000,0],[400000,.05],[400000,.10],[400000,.15],[400000,.20],[400000,.25],[Infinity,.30]];
+    let rem = Math.max(0, taxable);
+    for (const [lim, rate] of sl) { tax += Math.min(rem, lim) * rate; rem = Math.max(0, rem - lim); }
+    // Rebate u/s 87A (both FY 25-26 and FY 26-27): zero tax if taxable ≤ ₹12L
+    if (taxable <= 1200000) tax = 0;
+  } else {
+    // Old Regime: unchanged across both years
+    const sl = [[250000,0],[250000,.05],[500000,.20],[Infinity,.30]];
+    let rem = Math.max(0, taxable);
+    for (const [lim, rate] of sl) { tax += Math.min(rem, lim) * rate; rem = Math.max(0, rem - lim); }
+    // Rebate u/s 87A old regime: zero tax if taxable ≤ ₹5L
+    if (taxable <= 500000) tax = 0;
+  }
+  // Surcharge (simplified)
+  if (taxable > 5000000 && taxable <= 10000000) tax *= 1.10;
+  else if (taxable > 10000000) tax *= 1.15;
+  // Health & Education Cess 4%
+  return tax * 1.04;
+}
+
+function numWords(n) {
+  n = Math.round(n);
+  if (!n) return 'Zero';
+  const a = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+    'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const b = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  let s = '';
+  if (n >= 10000000) { s += numWords(Math.floor(n/10000000)) + ' Crore '; n %= 10000000; }
+  if (n >= 100000)   { s += numWords(Math.floor(n/100000))   + ' Lakh ';  n %= 100000; }
+  if (n >= 1000)     { s += numWords(Math.floor(n/1000))     + ' Thousand '; n %= 1000; }
+  if (n >= 100)      { s += a[Math.floor(n/100)] + ' Hundred '; n %= 100; }
+  if (n > 19)        { s += b[Math.floor(n/10)] + ' ' + a[n%10] + ' '; }
+  else if (n > 0)    { s += a[n] + ' '; }
+  return s.trim();
+}
+
+function showLoader(msg) { v('lmsg').textContent = msg; v('ldr').classList.add('show'); }
+function hideLoader() { v('ldr').classList.remove('show'); }
+
+/* ═══════════════════════════════════════════════════
+   COMPUTE
+═══════════════════════════════════════════════════ */
+function generate() {
+  const ctcA = parseFloat(v('ctc').value);
+  if (!ctcA || ctcA < 12000) { alert('Please enter a valid Annual CTC.'); return; }
+
+  const name   = v('empName').value  || 'New Employee';
+  const addr1  = v('empAddr1').value || '';
+  const addr2  = v('empAddr2').value || '';
+  const uan    = v('empUAN').value   || '';
+  const pan    = v('empPAN').value.toUpperCase() || '';
+  const bank   = v('empBank').value  || '';
+  const accNo  = v('empAcc').value   || '';
+  const empType= v('empType').value;
+  const desig  = v('desig').value    || '—';
+  const dept   = v('dept').value     || '—';
+  const doj    = v('doj').value      || '—';
+  const smon   = v('smon').value;
+  const hraPct = v('hraCity').value === 'm' ? 0.50 : 0.40;
+  const pfOn   = v('pf').value  === 'y';
+  const esiAuto= v('esi').value === 'auto';
+  const gratOn = v('grat').value === 'y';
+  const lwfOn  = v('lwf').checked;
+  const medOn  = v('med').checked;
+  const mealOn = v('meal').checked;
+  const ceaOn  = v('cea').checked;
+
+  const ctcM = ctcA / 12;
+
+  // Iterative resolution
+  let erPF=0, erESI=0, grat=0, erLWF=lwfOn?20:0;
+  for (let i=0; i<6; i++) {
+    const gEst = ctcM - erPF - erESI - grat - erLWF;
+    const bEst = gEst * 0.50;
+    erPF  = pfOn ? Math.min(bEst, 15000) * 0.12 : 0;
+    grat  = gratOn ? bEst * 0.0481 : 0;
+    erESI = (esiAuto && gEst <= 21000) ? gEst * 0.0325 : 0;
+  }
+
+  const grossM = ctcM - erPF - erESI - grat - erLWF;
+  const basic  = grossM * 0.50;
+  const hra    = basic * hraPct;
+  const ta     = Math.min(1600, grossM * 0.04);
+
+  // Optional allowances
+  let fixedA = 0, allowItems = [];
+  if (medOn)  { allowItems.push({n:'Medical Allowance',  m:1250, b:'₹1,250 fixed — partly exempt'}); fixedA += 1250; }
+  if (mealOn) { allowItems.push({n:'Meal / Food Allowance', m:2200, b:'₹2,200 fixed'}); fixedA += 2200; }
+  if (ceaOn)  { allowItems.push({n:'Children Education Allowance', m:200, b:'₹100×2 children — Sec 10(14)'}); fixedA += 200; }
+
+  const specA = Math.max(0, grossM - basic - hra - ta - fixedA);
+
+  // PF
+  const pfCap = Math.min(basic, 15000);
+  const empPF = pfOn ? pfCap * 0.12 : 0;
+  erPF        = pfOn ? pfCap * 0.12 : 0;
+  const eps   = pfOn ? Math.min(pfCap * 0.0833, 1250) : 0;
+  const edli  = pfOn ? Math.min(pfCap * 0.005,  75)   : 0;
+
+  // ESI
+  let empESI = 0;
+  if (esiAuto && grossM <= 21000) {
+    empESI = grossM * 0.0075;
+    erESI  = grossM * 0.0325;
+  }
+
+  // PT & LWF
+  // Odisha abolished Professional Tax from FY 2026-27 (Odisha State Budget, Feb 2026)
+  const pt     = (fy === '2627') ? 0 : getPT(grossM);
+  const empLWF = lwfOn ? 5 : 0;
+  erLWF        = lwfOn ? 20 : 0;
+
+  // TDS — slabs identical for FY 2025-26 & FY 2026-27; std deduction same too
+  // New Regime std deduction: ₹75,000 (both years)
+  // Old Regime std deduction: ₹50,000 (both years)
+  const fyLabel = fy === '2627' ? 'FY 2026-27 (AY 2027-28)' : 'FY 2025-26 (AY 2026-27)';
+  const itActRef = fy === '2627' ? 'Income Tax Act 2025' : 'Income Tax Act 1961';
+  let taxable = grossM * 12;
+  if (regime === 'new') {
+    taxable -= 75000;   // Std deduction — ₹75,000 both years
+    taxable -= pt * 12; // PT deductible u/s 16
+  } else {
+    taxable -= 50000;   // Std deduction old regime — ₹50,000 both years
+    taxable -= empPF * 12; // 80C
+    taxable -= pt * 12;
+  }
+  taxable = Math.max(0, taxable);
+  const annTDS = calcTDS(taxable, regime, fy);
+  const monTDS = annTDS / 12;
+
+  const totalDed = empPF + empESI + pt + empLWF + monTDS;
+  const takeHome = grossM - totalDed;
+
+  const monLabel = smon
+    ? new Date(smon+'-01').toLocaleDateString('en-IN', {month:'long', year:'numeric'})
+    : new Date().toLocaleDateString('en-IN', {month:'long', year:'numeric'});
+
+  // Build structured arrays
+  const earnings = [
+    {n:'Basic Salary',            m:basic,  b:'50% of Gross — Code on Wages 2019'},
+    {n:'House Rent Allowance',    m:hra,    b:(v('hraCity').value==='m'?'50%':'40%')+' of Basic — Sec 10(13A)'},
+    {n:'Transport Allowance',     m:ta,     b:'Fixed / 4% of Gross'},
+    ...allowItems.map(a=>({n:a.n, m:a.m, b:a.b})),
+    {n:'Special Allowance',       m:specA,  b:'Balancing component — fully taxable'},
+  ].filter(e => e.m > 0);
+
+  const deductions = [
+    pfOn     && {n:'EPF — Employee (12%)',     m:empPF,  b:`12% of Basic (cap ₹15,000)`},
+    empESI>0 && {n:'ESI — Employee (0.75%)',   m:empESI, b:'0.75% of Gross'},
+    pt>0     && {n:'Professional Tax (Odisha)',m:pt,     b:'Slab-based on Gross salary'},
+    empLWF>0 && {n:'Labour Welfare Fund',      m:empLWF, b:'₹5/month (Odisha LWF Act)'},
+    monTDS>0 && {n:`TDS — Income Tax (${regime==='new'?'New':'Old'} Regime · ${fyLabel})`, m:monTDS, b:`On ₹${fn(taxable)} taxable income`},
+  ].filter(Boolean);
+
+  const employerC = [
+    {n:'Gross Salary',              m:grossM, b:'Direct salary cost'},
+    pfOn && {n:'EPF — Employer',    m:erPF,   b:'12% of Basic → 3.67% EPF + 8.33% EPS'},
+    pfOn && eps>0 && {n:'EPS — Employer (out of above)', m:eps, b:'8.33% of Basic (max ₹1,250/mo) — part of EPF employer share'},
+    erESI>0 && {n:'ESI — Employer', m:erESI,  b:'3.25% of Gross'},
+    gratOn && {n:'Gratuity Provision', m:grat, b:'4.81% of Basic — Gratuity Act 1972'},
+    erLWF>0 && {n:'LWF — Employer', m:erLWF,  b:'₹20/month (Odisha LWF Act)'},
+  ].filter(Boolean);
+  // Note: EDLI (0.5% of Basic, max ₹75/mo) is a statutory obligation paid by employer
+  // separately to EPFO — not included in employee CTC as it has no direct benefit to employee
+
+  const notes = [
+    '<strong>Code on Wages 2019:</strong> Basic set at 50% of gross — mandatory floor for Basic+DA.',
+    pfOn ? `<strong>EPF:</strong> 12% each on Basic (cap ₹15,000). Employer share splits: 3.67%→EPF + 8.33%→EPS (max ₹1,250/mo). EDLI (0.5%, max ₹75/mo) is a statutory obligation paid by employer to EPFO — <em>excluded from CTC</em> as no direct benefit accrues to employee.`
+         : '<strong>EPF:</strong> Not applicable for this establishment.',
+    esiAuto ? (grossM<=21000 ? `<strong>ESI:</strong> Applicable — Gross ₹${fn(grossM)} ≤ ₹21,000. Employer 3.25% + Employee 0.75%.`
+              : `<strong>ESI:</strong> Not applicable — Gross ₹${fn(grossM)} exceeds ₹21,000/month threshold.`)
+            : '<strong>ESI:</strong> Excluded per selection.',
+    fy === '2627'
+      ? '<strong>Professional Tax (Odisha):</strong> <span style="color:#10b981">ABOLISHED</span> — Odisha State Budget FY 2026-27. No PT deduction applicable from 1 April 2026.'
+      : (pt>0 ? `<strong>Professional Tax (Odisha):</strong> ₹${pt}/month (Gross > ₹25,000). Max ₹2,400/year. Deductible u/s 16.`
+              : '<strong>Professional Tax (Odisha):</strong> NIL (Gross ≤ ₹25,000/month).'),
+    lwfOn ? '<strong>LWF (Odisha):</strong> Employee ₹5 + Employer ₹20/month to Labour Welfare Fund Board.' : '',
+    monTDS>0 ? `<strong>TDS (${fyLabel}):</strong> ₹${fn(monTDS)}/month on ₹${fn(taxable)} taxable income under ${regime==='new'?'New Regime (Std Dedn ₹75,000, Rebate u/s 87A up to ₹12L)':'Old Regime (Std Dedn ₹50,000, 80C ₹1.5L, Rebate u/s 87A up to ₹5L)'}. [${itActRef}] Adjust after Form 12BB declarations.`
+            : `<strong>TDS (${fyLabel}):</strong> NIL — Rebate u/s 87A applicable (taxable income ₹${fn(taxable)}). [${itActRef}]`,
+    gratOn ? '<strong>Gratuity:</strong> Payable after 5 years continuous service. Formula: Basic × 15/26 × Years.' : '',
+  ].filter(Boolean).join('<br>');
+
+  D = {
+    name, addr1, addr2, uan, pan, bank, accNo, empType, desig, dept, doj, monLabel,
+    ctcA, ctcM,
+    grossM, grossA: grossM*12,
+    takeHome, thA: takeHome*12,
+    totalDed,
+    basic, hra, ta, specA,
+    empPF, empESI, pt, empLWF, monTDS, annTDS, taxable,
+    erPF, erESI, grat, erLWF, eps, edli,
+    pfOn, esiAuto, gratOn, lwfOn, regime, fy, fyLabel, itActRef,
+    earnings, deductions, employerC, notes,
+    thWords: numWords(Math.round(takeHome)),
+    hraPct,
+  };
+
+  renderUI();
+}
+
+/* ═══════════════════════════════════════════════════
+   RENDER UI
+═══════════════════════════════════════════════════ */
+function renderUI() {
+  const d = D;
+
+  // Employee strip
+  const empTypeLabels = {
+    permanent:'Permanent Employee', fixedterm:'Fixed Term Employee (FTE)',
+    contractlabour:'Contract Labour', apprentice:'Apprentice',
+    parttime:'Part-Time Employee', casual:'Casual / Daily Wage'
+  };
+  const addrDisplay = [d.addr1, d.addr2].filter(Boolean).join(', ') || '—';
+  const uan_disp  = d.uan  ? `<strong>${d.uan}</strong>`  : '—';
+  const pan_disp  = d.pan  ? `<strong>${d.pan}</strong>`  : '—';
+  const bank_disp = d.bank ? d.bank + (d.accNo ? ` / ${d.accNo}` : '') : '—';
+  v('estrip').innerHTML = [
+    ['Employee',   d.name],
+    ['Type',       empTypeLabels[d.empType] || d.empType],
+    ['Designation',d.desig],
+    ['Dept',       d.dept],
+    ['DOJ',        d.doj],
+    ['Pay Month',  d.monLabel],
+    ['UAN',        d.uan||'—'],
+    ['PAN',        d.pan||'—'],
+    ['Bank',       d.bank||(d.accNo?'A/c: '+d.accNo:'—')],
+    ['Regime',     d.regime==='new'?'New':'Old'],
+    ['FY',         d.fyLabel.split(' ')[0]+' '+d.fyLabel.split(' ')[1]],
+  ].map(([k,val])=>`<div class="si"><div class="sk">${k}</div><div class="sv">${val}</div></div>`).join('');
+
+  // Cards
+  v('c-ctc').textContent = fi(d.ctcA);
+  v('c-th').textContent  = fi(d.takeHome);
+  v('c-gr').textContent  = fi(d.grossM);
+  v('c-ba').textContent  = fi(d.basic);
+  v('c-hra').textContent = fi(d.hra);
+  v('c-pf').textContent  = fi(d.empPF);
+  v('c-tds').textContent = fi(d.monTDS);
+
+  // Earnings table
+  v('earB').innerHTML = d.earnings.map(e=>
+    `<tr><td>${e.n}</td><td style="color:var(--mut);font-size:10px">${e.b}</td>
+     <td>${fn(e.m)}</td><td>${fn(e.m*12)}</td></tr>`
+  ).join('') + `<tr class="tot">
+    <td colspan="2">Gross Salary (A)</td>
+    <td>${fn(d.grossM)}</td><td>${fn(d.grossA)}</td></tr>`;
+
+  // Deductions table
+  v('dedB').innerHTML = d.deductions.map(e=>
+    `<tr class="ded"><td>${e.n}</td><td style="color:var(--mut);font-size:10px">${e.b}</td>
+     <td>(${fn(e.m)})</td><td>(${fn(e.m*12)})</td></tr>`
+  ).join('') + `<tr class="net">
+    <td colspan="2">💰 Net Take-Home (A − B)</td>
+    <td>${fn(d.takeHome)}</td><td>${fn(d.thA)}</td></tr>`;
+
+  // Employer table
+  v('erB').innerHTML = d.employerC.map(e=>
+    `<tr><td>${e.n}</td><td style="color:var(--mut);font-size:10px">${e.b}</td>
+     <td>${fn(e.m)}</td><td>${fn(e.m*12)}</td></tr>`
+  ).join('') + `<tr class="tot">
+    <td colspan="2">Total CTC (Gross + Employer Contribs)</td>
+    <td>${fn(d.ctcM)}</td><td>${fn(d.ctcA)}</td></tr>`;
+
+  v('notebox').innerHTML = '<strong>📋 Statutory Notes:</strong><br>' + d.notes;
+
+  v('ph').style.display  = 'none';
+  v('out').classList.add('show');
+}
+
+/* ═══════════════════════════════════════════════════
+   EXCEL EXPORT — SheetJS with full cell formatting
+═══════════════════════════════════════════════════ */
+function dlExcel() {
+  if (!D) { alert('Generate salary structure first.'); return; }
+  showLoader('Building Excel file...');
+  setTimeout(() => {
+    try {
+      const d = D;
+      const wb = XLSX.utils.book_new();
+
+      // ── Colour palette ──
+      const C = {
+        navyBg:'1a2744', navyFg:'FFFFFF',
+        navy2:'243352',  gold:'F59E0B',
+        goldBg:'D97706', lgold:'FEF3C7',
+        lgreen:'D1FAE5', dgreen:'065F46',
+        lred:'FEE2E2',   dred:'991B1B',
+        lblue:'DBEAFE',  lgray:'F3F4F6',
+        white:'FFFFFF',  black:'000000',
+        emerald:'10B981',blue2:'93C5FD',
+        mut:'6B7280',
+      };
+
+      // ── Cell builder ──
+      function mkCell(v, {
+        bold=false, sz=10, fg=C.black, bg=C.white,
+        italic=false, align='left', valign='center',
+        wrap=false, numFmt='', border=true
+      }={}) {
+        const t = (typeof v === 'number') ? 'n' : 's';
+        const c = { v, t,
+          s: {
+            font:{ name:'Arial', sz, bold, italic, color:{rgb:fg} },
+            fill:{ patternType:'solid', fgColor:{rgb:bg} },
+            alignment:{ horizontal:align, vertical:valign, wrapText:wrap },
+            numFmt,
+          }
+        };
+        if (border) {
+          const bIn  = { style:'thin',   color:{rgb:'E5E7EB'} };
+          const bOut = { style:'medium', color:{rgb:'9CA3AF'} };
+          c.s.border = { top:bIn, bottom:bIn, left:bIn, right:bIn };
+        }
+        return c;
+      }
+
+      function hdrCell(v, bgHex=C.navyBg, fgHex=C.navyFg, sz=10) {
+        return mkCell(v, {bold:true, sz, fg:fgHex, bg:bgHex, align:'center'});
+      }
+
+      function merge(ws, r1,c1,r2,c2) {
+        if (!ws['!merges']) ws['!merges'] = [];
+        ws['!merges'].push({s:{r:r1,c:c1},e:{r:r2,c:c2}});
+      }
+
+      function setCell(ws, r, c, cell) {
+        const addr = XLSX.utils.encode_cell({r,c});
+        ws[addr] = cell;
+        if (!ws['!ref']) {
+          ws['!ref'] = addr + ':' + addr;
+        } else {
+          const ref = XLSX.utils.decode_range(ws['!ref']);
+          if (r < ref.s.r) ref.s.r = r;
+          if (c < ref.s.c) ref.s.c = c;
+          if (r > ref.e.r) ref.e.r = r;
+          if (c > ref.e.c) ref.e.c = c;
+          ws['!ref'] = XLSX.utils.encode_range(ref);
+        }
+      }
+
+      function setRow(ws, r, cells) {
+        cells.forEach((cell, c) => { if(cell) setCell(ws, r, c, cell); });
+      }
+
+      // ════════════════════════════════════════════════════
+      // SHEET 1 — SALARY STRUCTURE
+      // ════════════════════════════════════════════════════
+      const ws1 = {};
+      ws1['!cols'] = [{wch:5},{wch:34},{wch:26},{wch:15},{wch:15},{wch:11}];
+
+      let r = 0;
+
+      // ── LETTERHEAD SPACE (top 6 rows) ──
+      const lhStyle = {bg:'F7F7F7', border:false};
+      for(let lh=0; lh<5; lh++){
+        setRow(ws1, r, [
+          mkCell('', lhStyle), mkCell(lh===0?'[ COMPANY LETTERHEAD — Paste / Print your firm letterhead here ]':'', {sz:lh===0?9:8, fg:'BBBBBB', bg:'F7F7F7', italic:true, align:'center', border:false}),
+          mkCell('',lhStyle),mkCell('',lhStyle),mkCell('',lhStyle),mkCell('',lhStyle),
+        ]);
+        if(lh===0) merge(ws1, r,1, r,5);
+        ws1['!rows'] = ws1['!rows']||[];
+        ws1['!rows'][r] = {hpt: lh===0?14:22};
+        r++;
+      }
+
+      // Thick top border line
+      setRow(ws1, r, Array(6).fill(null).map((_,i)=>mkCell('',{bg:'1a2744',border:false})));
+      ws1['!rows'][r]={hpt:4}; r++;
+
+      // Title banner
+      setRow(ws1, r, [
+        mkCell('', {bg:'1a2744', border:false}),
+        mkCell(`SALARY STRUCTURE — ${d.name.toUpperCase()}`, {bold:true, sz:14, fg:'F59E0B', bg:'1a2744', align:'left', border:false}),
+        mkCell('', {bg:'1a2744', border:false}),
+        mkCell('', {bg:'1a2744', border:false}),
+        mkCell('', {bg:'1a2744', border:false}),
+        mkCell('', {bg:'1a2744', border:false}),
+      ]);
+      merge(ws1, r,1, r,5); ws1['!rows'][r]={hpt:32}; r++;
+
+      setRow(ws1, r, [
+        mkCell('', {bg:'243352', border:false}),
+        mkCell(`${d.fyLabel}  |  Code on Wages 2019  |  ${d.itActRef}`, {sz:9, fg:'93C5FD', bg:'243352', align:'left', border:false}),
+        mkCell('', {bg:'243352', border:false}),mkCell('', {bg:'243352', border:false}),
+        mkCell('', {bg:'243352', border:false}),mkCell('', {bg:'243352', border:false}),
+      ]);
+      merge(ws1, r,1, r,5); ws1['!rows'][r]={hpt:18}; r++; r++;
+
+      // Employee info block
+      const empTypeMap = {permanent:'Permanent',fixedterm:'Fixed Term (FTE)',contractlabour:'Contract Labour',apprentice:'Apprentice',parttime:'Part-Time',casual:'Casual / Daily Wage'};
+      const infoRows = [
+        ['Employee Name', d.name,           'Date of Joining',   d.doj],
+        ['Designation',   d.desig,          'Salary Month',      d.monLabel],
+        ['Department',    d.dept,           'Employee Type',     empTypeMap[d.empType]||d.empType],
+        ['UAN Number',    d.uan||'—',       'PAN Number',        d.pan||'—'],
+        ['Bank Name',     d.bank||'—',      'Bank A/c No.',      d.accNo||'—'],
+        ['Annual CTC',    d.ctcA,           'Tax Regime',        d.regime==='new'?'New Regime (Default)':'Old Regime'],
+      ];
+      infoRows.forEach(([l1,v1,l2,v2]) => {
+        const isCtc = l1==='Annual CTC';
+        setRow(ws1, r, [
+          mkCell('', {bg:C.lgray}),
+          mkCell(l1, {bold:true, fg:C.navy, bg:C.lblue}),
+          mkCell(v1, {bg:C.white, numFmt:isCtc?'₹#,##0':'', align:isCtc?'right':'left', bold:isCtc, fg:isCtc?C.dgreen:C.black}),
+          mkCell(l2, {bold:true, fg:C.navy, bg:C.lblue}),
+          mkCell(typeof v2==='number'?v2:v2||'', {bg:C.white}),
+          mkCell('', {bg:C.white}),
+        ]);
+        r++;
+      });
+      r++;
+
+      // Column headers
+      const colHdrs = ['#','Salary Component','Basis / Statutory Rule','Monthly (₹)','Annual (₹)','% of CTC'];
+      setRow(ws1, r, colHdrs.map((h,i) => hdrCell(h, C.navyBg, C.navyFg, 9)));
+      r++;
+
+      // ── Section A: Earnings ──
+      setRow(ws1, r, [
+        hdrCell('A', C.goldBg, C.navyFg),
+        mkCell('EARNINGS — GROSS SALARY', {bold:true, fg:C.navy, bg:C.lgold, align:'left'}),
+        mkCell('', {bg:C.lgold}),
+        mkCell('', {bg:C.lgold}),
+        mkCell('', {bg:C.lgold}),
+        mkCell('', {bg:C.lgold}),
+      ]);
+      merge(ws1, r,1, r,5); r++;
+
+      d.earnings.forEach((e, i) => {
+        const rowBg = i%2===0 ? C.white : C.lgray;
+        setRow(ws1, r, [
+          mkCell(i+1, {align:'center', bg:rowBg, sz:9}),
+          mkCell(e.n, {bg:rowBg, sz:9}),
+          mkCell(e.b, {bg:rowBg, sz:8, italic:true, fg:'555555'}),
+          mkCell(Math.round(e.m), {bg:rowBg, align:'right', numFmt:'#,##0', sz:9}),
+          mkCell(Math.round(e.m*12), {bg:rowBg, align:'right', numFmt:'#,##0', sz:9}),
+          mkCell((Math.round(e.m*12/d.ctcA*1000)/10)+'%', {bg:rowBg, align:'center', sz:9}),
+        ]);
+        r++;
+      });
+
+      // Gross total row
+      setRow(ws1, r, [
+        mkCell('', {bg:C.lgreen}),
+        mkCell('GROSS SALARY (A)', {bold:true, fg:C.dgreen, bg:C.lgreen, sz:10}),
+        mkCell('', {bg:C.lgreen}),
+        mkCell(Math.round(d.grossM), {bold:true, fg:C.dgreen, bg:C.lgreen, align:'right', numFmt:'#,##0', sz:10}),
+        mkCell(Math.round(d.grossA), {bold:true, fg:C.dgreen, bg:C.lgreen, align:'right', numFmt:'#,##0', sz:10}),
+        mkCell((Math.round(d.grossA/d.ctcA*1000)/10)+'%', {bold:true, fg:C.dgreen, bg:C.lgreen, align:'center', sz:10}),
+      ]);
+      r++; r++;
+
+      // ── Section B: Deductions ──
+      setRow(ws1, r, [
+        hdrCell('B', C.dred, C.navyFg),
+        mkCell('EMPLOYEE DEDUCTIONS', {bold:true, fg:C.dred, bg:C.lred, align:'left'}),
+        mkCell('', {bg:C.lred}),
+        mkCell('', {bg:C.lred}),
+        mkCell('', {bg:C.lred}),
+        mkCell('', {bg:C.lred}),
+      ]);
+      merge(ws1, r,1, r,5); r++;
+
+      d.deductions.forEach((e, i) => {
+        const rowBg = i%2===0 ? C.white : C.lgray;
+        setRow(ws1, r, [
+          mkCell(i+1, {align:'center', bg:rowBg, sz:9}),
+          mkCell(e.n, {bg:rowBg, sz:9}),
+          mkCell(e.b, {bg:rowBg, sz:8, italic:true, fg:'555555'}),
+          mkCell('('+Math.round(e.m)+')', {bg:rowBg, align:'right', fg:C.dred, sz:9}),
+          mkCell('('+Math.round(e.m*12)+')', {bg:rowBg, align:'right', fg:C.dred, sz:9}),
+          mkCell((Math.round(e.m*12/d.ctcA*1000)/10)+'%', {bg:rowBg, align:'center', fg:C.dred, sz:9}),
+        ]);
+        r++;
+      });
+
+      // Net Take-Home
+      setRow(ws1, r, [
+        mkCell('', {bg:C.lgreen}),
+        mkCell('NET TAKE-HOME SALARY (A - B)', {bold:true, fg:C.dgreen, bg:C.lgreen, sz:11}),
+        mkCell('', {bg:C.lgreen}),
+        mkCell(Math.round(d.takeHome), {bold:true, fg:C.dgreen, bg:C.lgreen, align:'right', numFmt:'#,##0', sz:11}),
+        mkCell(Math.round(d.thA), {bold:true, fg:C.dgreen, bg:C.lgreen, align:'right', numFmt:'#,##0', sz:11}),
+        mkCell((Math.round(d.thA/d.ctcA*1000)/10)+'%', {bold:true, fg:C.dgreen, bg:C.lgreen, align:'center', sz:11}),
+      ]);
+      r++; r++;
+
+      // ── Section C: Employer ──
+      setRow(ws1, r, [
+        hdrCell('C', C.navyBg, C.navyFg),
+        mkCell("EMPLOYER'S CTC COMPONENTS", {bold:true, fg:C.navy, bg:C.lblue, align:'left'}),
+        mkCell('', {bg:C.lblue}),
+        mkCell('', {bg:C.lblue}),
+        mkCell('', {bg:C.lblue}),
+        mkCell('', {bg:C.lblue}),
+      ]);
+      merge(ws1, r,1, r,5); r++;
+
+      d.employerC.forEach((e, i) => {
+        const rowBg = i%2===0 ? C.white : C.lgray;
+        setRow(ws1, r, [
+          mkCell(i+1, {align:'center', bg:rowBg, sz:9}),
+          mkCell(e.n, {bg:rowBg, sz:9}),
+          mkCell(e.b, {bg:rowBg, sz:8, italic:true, fg:'555555'}),
+          mkCell(Math.round(e.m), {bg:rowBg, align:'right', numFmt:'#,##0', sz:9}),
+          mkCell(Math.round(e.m*12), {bg:rowBg, align:'right', numFmt:'#,##0', sz:9}),
+          mkCell((Math.round(e.m*12/d.ctcA*1000)/10)+'%', {bg:rowBg, align:'center', sz:9}),
+        ]);
+        r++;
+      });
+
+      // CTC Total
+      setRow(ws1, r, [
+        mkCell('', {bg:C.lgold}),
+        mkCell('TOTAL COST TO COMPANY (CTC)', {bold:true, fg:C.navy, bg:C.lgold, sz:11}),
+        mkCell('', {bg:C.lgold}),
+        mkCell(Math.round(d.ctcM), {bold:true, fg:C.navy, bg:C.lgold, align:'right', numFmt:'#,##0', sz:11}),
+        mkCell(Math.round(d.ctcA), {bold:true, fg:C.navy, bg:C.lgold, align:'right', numFmt:'#,##0', sz:11}),
+        mkCell('100.0%', {bold:true, fg:C.navy, bg:C.lgold, align:'center', sz:11}),
+      ]);
+      r++; r++;
+
+      // Statutory Notes
+      setRow(ws1, r, [
+        mkCell('', {bg:C.navyBg}),
+        mkCell('STATUTORY NOTES', {bold:true, sz:9, fg:C.navyFg, bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+      ]);
+      merge(ws1, r,1, r,5); r++;
+
+      const notesList = [
+        'Code on Wages 2019: Basic + DA >= 50% of total remuneration. Basic set at 50% of Gross Salary.',
+        d.pfOn ? `EPF: Employee & Employer each 12% of Basic (ceiling Rs.15,000). Employer split: 3.67% to EPF + 8.33% to EPS (max Rs.1,250). EDLI (0.5%) paid separately by employer — not in CTC.` : 'EPF: Not applicable for this establishment.',
+        d.esiAuto ? (d.grossM<=21000 ? `ESI: Applicable. Gross Rs.${fn(d.grossM)} is within Rs.21,000 limit. Employer 3.25% + Employee 0.75% of Gross.` : `ESI: Not applicable. Gross Rs.${fn(d.grossM)} exceeds Rs.21,000/month.`) : 'ESI: Excluded per selection.',
+        d.fy==='2627' ? 'Professional Tax: ABOLISHED in Odisha from 1 April 2026 (Odisha State Budget FY 2026-27).' : (d.pt>0 ? `Professional Tax (Odisha): Rs.${d.pt}/month. Max Rs.2,400/year. Deductible u/s 16.` : 'Professional Tax: NIL.'),
+        d.lwfOn ? 'LWF (Odisha): Employee Rs.5 + Employer Rs.20/month to Labour Welfare Fund Board.' : '',
+        d.monTDS>0 ? `TDS (${d.fyLabel}): Rs.${fn(d.monTDS)}/month on taxable income Rs.${fn(d.taxable)}/year under ${d.regime==='new'?'New Regime (Std Dedn Rs.75,000, 87A rebate up to Rs.12L)':'Old Regime (Std Dedn Rs.50,000, 80C up to Rs.1.5L)'}. [${d.itActRef}]` : `TDS: NIL. Rebate u/s 87A applicable. [${d.itActRef}]`,
+        d.gratOn ? 'Gratuity: Payable after 5 years continuous service. Formula: Basic x 15/26 x Years. Max tax-free: Rs.20 lakh.' : '',
+      ].filter(Boolean);
+
+      notesList.forEach(note => {
+        setRow(ws1, r, [
+          mkCell('', {bg:'F0F4FF'}),
+          mkCell(note, {sz:8, fg:'444466', bg:'F0F4FF', wrap:true, italic:true}),
+          mkCell('', {bg:'F0F4FF'}),
+          mkCell('', {bg:'F0F4FF'}),
+          mkCell('', {bg:'F0F4FF'}),
+          mkCell('', {bg:'F0F4FF'}),
+        ]);
+        merge(ws1, r,1, r,5);
+        ws1['!rows'] = ws1['!rows'] || [];
+        ws1['!rows'][r] = {hpt:22};
+        r++;
+      });
+
+      // Footer
+      r++;
+      setRow(ws1, r, [
+        mkCell('', {bg:C.navyBg}),
+        mkCell('Confidential — Salary Structure Document', {sz:8, fg:'AAAAAA', bg:C.navyBg, italic:true}),
+        mkCell('', {bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+        mkCell('', {bg:C.navyBg}),
+      ]);
+      merge(ws1, r,1, r,5);
+
+      XLSX.utils.book_append_sheet(wb, ws1, 'Salary Structure');
+
+      // ════════════════════════════════════════════════════
+      // SHEET 2 — PAY SLIP
+      // ════════════════════════════════════════════════════
+      const ws2 = {};
+      ws2['!cols'] = [{wch:5},{wch:28},{wch:18},{wch:14},{wch:5},{wch:26},{wch:18},{wch:14}];
+      ws2['!rows'] = [{hpt:40},{hpt:20}];
+
+      let p = 0;
+
+      // Pay Slip title
+      setRow(ws2, p, [
+        mkCell('', {bg:C.navyBg,border:false}),
+        mkCell('PAY SLIP', {bold:true, sz:18, fg:'FFD700', bg:C.navyBg, align:'center',border:false}),
+        mkCell('', {bg:C.navyBg,border:false}),mkCell('', {bg:C.navyBg,border:false}),
+        mkCell('', {bg:C.navyBg,border:false}),mkCell('', {bg:C.navyBg,border:false}),
+        mkCell('', {bg:C.navyBg,border:false}),mkCell('', {bg:C.navyBg,border:false}),
+      ]);
+      merge(ws2, p,0, p,7); p++;
+
+      setRow(ws2, p, [
+        mkCell('', {bg:C.goldBg,border:false}),
+        mkCell(`${d.fyLabel}  |  Pay Slip`, {sz:9, fg:'FEF3C7', bg:C.navy2, align:'center', border:false}),
+        mkCell('', {bg:C.goldBg,border:false}),mkCell('', {bg:C.goldBg,border:false}),
+        mkCell('', {bg:C.goldBg,border:false}),mkCell('', {bg:C.goldBg,border:false}),
+        mkCell('', {bg:C.goldBg,border:false}),mkCell('', {bg:C.goldBg,border:false}),
+      ]);
+      merge(ws2, p,0, p,7); p++; p++;
+
+      // Employee info — 2 columns
+      const psInfo = [
+        ['Employee Name', d.name,                          'Pay Month',    d.monLabel],
+        ['Designation',   d.desig,                         'Working Days', '_____ / _____'],
+        ['Department',    d.dept,                          'Employee Type',empTypeMap[d.empType]||d.empType],
+        ['Date of Joining', d.doj,                         'Tax Regime',   d.regime==='new'?'New Regime':'Old Regime'],
+        ['UAN Number',    d.uan||'_______________',         'PAN Number',   d.pan||'_______________'],
+        ['Bank Name',     d.bank||'_______________',        'Bank A/c No.', d.accNo||'_______________'],
+      ];
+      psInfo.forEach(([l1,v1,l2,v2]) => {
+        setRow(ws2, p, [
+          mkCell('', {bg:C.lgray}),
+          mkCell(l1, {bold:true, fg:C.navy, bg:C.lblue, sz:9}),
+          mkCell(v1, {bg:C.white, sz:9}),
+          mkCell('', {bg:C.white}),
+          mkCell('', {bg:C.lgray}),
+          mkCell(l2, {bold:true, fg:C.navy, bg:C.lblue, sz:9}),
+          mkCell(v2||'', {bg:C.white, sz:9}),
+          mkCell('', {bg:C.white}),
+        ]);
+        merge(ws2, p,2, p,3); merge(ws2, p,6, p,7);
+        p++;
+      });
+      p++;
+
+      // Earnings / Deductions table side by side
+      setRow(ws2, p, [
+        mkCell('', {bg:C.navyBg}),
+        hdrCell('EARNINGS', C.navyBg, C.navyFg, 10),
+        mkCell('', {bg:C.navyBg}),
+        hdrCell('Amount (₹)', C.navyBg, C.navyFg, 9),
+        mkCell('', {bg:C.dred}),
+        hdrCell('DEDUCTIONS', C.dred, C.navyFg, 10),
+        mkCell('', {bg:C.dred}),
+        hdrCell('Amount (₹)', C.dred, C.navyFg, 9),
+      ]);
+      merge(ws2, p,1, p,2); merge(ws2, p,5, p,6); p++;
+
+      const maxL = Math.max(d.earnings.length, d.deductions.length);
+      for (let i=0; i<maxL; i++) {
+        const e  = d.earnings[i]   || {n:'', m:0};
+        const dd = d.deductions[i] || {n:'', m:0};
+        const rowBg = i%2===0 ? C.white : C.lgray;
+        setRow(ws2, p, [
+          mkCell('', {bg:rowBg}),
+          mkCell(e.n, {bg:rowBg, sz:9}),
+          mkCell('', {bg:rowBg}),
+          mkCell(e.m>0 ? Math.round(e.m) : '', {bg:rowBg, align:'right', numFmt:e.m>0?'#,##0':'', sz:9}),
+          mkCell('', {bg:rowBg}),
+          mkCell(dd.n, {bg:rowBg, sz:9, fg:dd.m>0?C.dred:C.black}),
+          mkCell('', {bg:rowBg}),
+          mkCell(dd.m>0 ? '('+Math.round(dd.m)+')' : '', {bg:rowBg, align:'right', fg:C.dred, sz:9}),
+        ]);
+        merge(ws2, p,1, p,2); merge(ws2, p,5, p,6); p++;
+      }
+      p++;
+
+      // Gross / Total Deductions row
+      setRow(ws2, p, [
+        mkCell('', {bg:C.lgreen}),
+        mkCell('GROSS SALARY', {bold:true, fg:C.dgreen, bg:C.lgreen, sz:10}),
+        mkCell('', {bg:C.lgreen}),
+        mkCell(Math.round(d.grossM), {bold:true, fg:C.dgreen, bg:C.lgreen, align:'right', numFmt:'#,##0', sz:10}),
+        mkCell('', {bg:C.lred}),
+        mkCell('TOTAL DEDUCTIONS', {bold:true, fg:C.dred, bg:C.lred, sz:10}),
+        mkCell('', {bg:C.lred}),
+        mkCell('('+Math.round(d.totalDed)+')', {bold:true, fg:C.dred, bg:C.lred, align:'right', sz:10}),
+      ]);
+      merge(ws2, p,1, p,2); merge(ws2, p,5, p,6); p++; p++;
+
+      // NET PAY — full width
+      setRow(ws2, p, [
+        mkCell('', {bg:C.lgold}),
+        mkCell('NET PAY (TAKE-HOME SALARY)', {bold:true, fg:C.navy, bg:C.lgold, sz:12}),
+        mkCell('', {bg:C.lgold}),mkCell('', {bg:C.lgold}),mkCell('', {bg:C.lgold}),mkCell('', {bg:C.lgold}),mkCell('', {bg:C.lgold}),
+        mkCell(Math.round(d.takeHome), {bold:true, fg:C.navy, bg:C.lgold, align:'right', numFmt:'#,##0', sz:12}),
+      ]);
+      merge(ws2, p,1, p,6); ws2['!rows'] = ws2['!rows']||[]; ws2['!rows'][p]={hpt:24}; p++;
+
+      // Amount in words
+      setRow(ws2, p, [
+        mkCell('', {bg:'F0F4FF'}),
+        mkCell('Amount in Words: ' + d.thWords + ' Rupees Only', {sz:9, fg:C.navy, bg:'F0F4FF', italic:true, bold:true, wrap:true}),
+        mkCell('',{bg:'F0F4FF'}),mkCell('',{bg:'F0F4FF'}),mkCell('',{bg:'F0F4FF'}),mkCell('',{bg:'F0F4FF'}),mkCell('',{bg:'F0F4FF'}),mkCell('',{bg:'F0F4FF'}),
+      ]);
+      merge(ws2, p,1, p,7); ws2['!rows'][p]={hpt:18}; p++; p++;
+
+      // Signature block
+      setRow(ws2, p, [
+        mkCell('', {border:false}),
+        mkCell('Prepared By', {bold:true, align:'center', sz:9}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+        mkCell('Authorised Signatory / HR', {bold:true, align:'center', sz:9}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+      ]);
+      merge(ws2, p,1, p,3); merge(ws2, p,5, p,7); p++;
+      p++;
+      setRow(ws2, p, [
+        mkCell('', {border:false}),
+        mkCell('[Authorised Signatory]', {align:'center', sz:9, fg:'666666'}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+        mkCell('[Employer Name & Stamp]', {align:'center', sz:9, fg:'666666'}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+      ]);
+      merge(ws2, p,1, p,3); merge(ws2, p,5, p,7); p++;
+      setRow(ws2, p, [
+        mkCell('', {border:false}),
+        mkCell('Date: _______________', {align:'center', sz:9, fg:'888888'}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+        mkCell('Date: _______________', {align:'center', sz:9, fg:'888888'}),
+        mkCell('', {border:false}),
+        mkCell('', {border:false}),
+      ]);
+      merge(ws2, p,1, p,3); merge(ws2, p,5, p,7);
+
+      XLSX.utils.book_append_sheet(wb, ws2, 'Pay Slip');
+
+      // ════════════════════════════════════════════════════
+      // SHEET 3 — STATUTORY COMPLIANCE (unchanged logic, styled)
+      // ════════════════════════════════════════════════════
+      const ws3 = {};
+      ws3['!cols'] = [{wch:5},{wch:34},{wch:22},{wch:15},{wch:15},{wch:30}];
+
+      let s = 0;
+      setRow(ws3, s, [
+        mkCell('',{bg:C.navyBg,border:false}),
+        mkCell('STATUTORY COMPLIANCE SUMMARY — '+d.name.toUpperCase(), {bold:true,sz:13,fg:'FFD700',bg:C.navyBg,align:'center',border:false}),
+        mkCell('',{bg:C.navyBg,border:false}),mkCell('',{bg:C.navyBg,border:false}),mkCell('',{bg:C.navyBg,border:false}),mkCell('',{bg:C.navyBg,border:false}),
+      ]);
+      merge(ws3,s,1,s,5); ws3['!rows']=[{hpt:32}]; s++;
+      setRow(ws3, s, [
+        mkCell('',{bg:C.goldBg,border:false}),
+        mkCell(`${d.fyLabel}  |  Statutory Compliance Summary`, {sz:9,fg:'FEF3C7',bg:C.navy2,align:'center',border:false}),
+        mkCell('',{bg:C.goldBg,border:false}),mkCell('',{bg:C.goldBg,border:false}),mkCell('',{bg:C.goldBg,border:false}),mkCell('',{bg:C.goldBg,border:false}),
+      ]);
+      merge(ws3,s,1,s,5); s++; s++;
+
+      setRow(ws3,s,['#','Component','Rate','Monthly (₹)','Annual (₹)','Governing Law'].map(h=>hdrCell(h,C.navyBg,C.navyFg,9))); s++;
+
+      const statRows2 = [
+        d.pfOn && [1,'EPF — Employee','12% of Basic (cap ₹15,000)',Math.round(d.empPF),Math.round(d.empPF*12),'EPF & MP Act 1952'],
+        d.pfOn && [2,'EPF — Employer','12% of Basic',Math.round(d.erPF),Math.round(d.erPF*12),'EPF & MP Act 1952'],
+        d.pfOn && d.eps>0 && [3,'EPS (out of Employer PF)','8.33% (max ₹1,250)',Math.round(d.eps),Math.round(d.eps*12),'EPF & MP Act 1952'],
+        d.pfOn && [4,'EDLI (Employer only — not in CTC)','0.5% (max ₹75)',Math.round(d.edli),Math.round(d.edli*12),'EDLI Scheme 1976'],
+        d.empESI>0 && [5,'ESI — Employee','0.75% of Gross',Math.round(d.empESI),Math.round(d.empESI*12),'ESI Act 1948'],
+        d.erESI>0  && [6,'ESI — Employer','3.25% of Gross',Math.round(d.erESI),Math.round(d.erESI*12),'ESI Act 1948'],
+        d.fy!=='2627' && d.pt>0 && [7,'Professional Tax','Slab-based',d.pt,d.pt*12,'Odisha PT Act (Abolished FY 26-27)'],
+        d.lwfOn && [8,'LWF — Employee','₹5/month',d.empLWF,d.empLWF*12,'Odisha LWF Act 1996'],
+        d.lwfOn && [9,'LWF — Employer','₹20/month',d.erLWF,d.erLWF*12,'Odisha LWF Act 1996'],
+        d.gratOn && [10,'Gratuity Provision','4.81% of Basic',Math.round(d.grat),Math.round(d.grat*12),'Payment of Gratuity Act 1972'],
+        d.monTDS>0 && [11,`TDS — Income Tax (${d.regime} regime)`,`On ₹${fn(d.taxable)} taxable`,Math.round(d.monTDS),Math.round(d.annTDS),d.itActRef],
+      ].filter(Boolean);
+
+      statRows2.forEach((row, i) => {
+        const bg = i%2===0 ? C.white : C.lgray;
+        setRow(ws3, s, [
+          mkCell(row[0], {align:'center', bg, sz:9}),
+          mkCell(row[1], {bg, sz:9}),
+          mkCell(row[2], {bg, sz:9, align:'center'}),
+          mkCell(row[3], {bg, sz:9, align:'right', numFmt:'#,##0'}),
+          mkCell(row[4], {bg, sz:9, align:'right', numFmt:'#,##0'}),
+          mkCell(row[5], {bg, sz:8, fg:'555555', italic:true}),
+        ]);
+        s++;
+      });
+
+      // PT note for FY 2026-27
+      if (d.fy === '2627') {
+        s++;
+        setRow(ws3, s, [
+          mkCell('',{bg:C.lgreen}),
+          mkCell('✅ Professional Tax: ABOLISHED in Odisha from 1 April 2026 — Odisha State Budget FY 2026-27. No deduction required.', {bold:true,sz:9,fg:C.dgreen,bg:C.lgreen,wrap:true}),
+          mkCell('',{bg:C.lgreen}),mkCell('',{bg:C.lgreen}),mkCell('',{bg:C.lgreen}),mkCell('',{bg:C.lgreen}),
+        ]);
+        merge(ws3,s,1,s,5); ws3['!rows'][s]={hpt:22};
+      }
+
+      XLSX.utils.book_append_sheet(wb, ws3, 'Statutory Compliance');
+
+      const fname = `Salary_${d.name.replace(/\s+/g,'_')}_${d.fy}_${new Date().toISOString().slice(0,10)}.xlsx`;
+      XLSX.writeFile(wb, fname);
+
+    } catch(err) {
+      console.error(err);
+      alert('Excel export failed: ' + err.message);
+    } finally {
+      hideLoader();
+    }
+  }, 150);
+}
+
+/* ═══════════════════════════════════════════════════
+   WORD EXPORT — Pure HTML → .doc (Word-compatible)
+═══════════════════════════════════════════════════ */
+function dlWord() {
+  if (!D) { alert('Generate salary structure first.'); return; }
+  showLoader('Generating Word document...');
+  setTimeout(() => {
+    try {
+      const d = D;
+      const NAVY = '#1F3864'; const GOLD = '#C9A227'; const LGOLD = '#FFF9E6';
+      const LGRAY = '#F5F5F5'; const LBLUE = '#DDEEFF'; const LGREEN = '#E8F5E9';
+      const LRED  = '#FFE7E7';
+
+      const tStyle = `border-collapse:collapse;width:100%;font-family:Arial;font-size:10pt`;
+      const thStyle = (bg=NAVY,fg='#fff') =>
+        `background:${bg};color:${fg};padding:6px 9px;font-weight:bold;border:1px solid #ccc;font-size:9.5pt;text-align:left`;
+      const tdS = (bg='#fff',bold=false,fg='#000',align='left') =>
+        `background:${bg};color:${fg};padding:6px 9px;border:1px solid #ddd;font-weight:${bold?'bold':'normal'};text-align:${align};font-family:Arial;font-size:10pt`;
+
+      const salRow = (label, monthly, annual, isTotal=false, isDed=false) => `
+        <tr>
+          <td style="${tdS(isTotal?LGOLD:LGRAY, isTotal, isTotal?NAVY:'#333')}">${label}</td>
+          <td style="${tdS(isTotal?LGOLD:'#fff', isTotal, isDed?'#c00000':'#000','right')}">${isDed?'('+fn(monthly)+')':fn(monthly)}</td>
+          <td style="${tdS(isTotal?LGOLD:'#fff', isTotal, isDed?'#c00000':'#000','right')}">${isDed?'('+fn(monthly*12)+')':fn(monthly*12)}</td>
+        </tr>`;
+
+      const html = `
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  body{font-family:Arial;font-size:10pt;color:#000;margin:0;padding:0}
+  h2{font-size:13pt;color:${NAVY};margin:14px 0 6px}
+  h3{font-size:11pt;color:${NAVY};margin:12px 0 4px}
+  p{font-size:10pt;line-height:1.7;margin:4px 0}
+  table{border-collapse:collapse;width:100%}
+  td,th{font-family:Arial;font-size:10pt}
+  .section-hdr{background:${NAVY};color:#fff;padding:5px 9px;font-weight:bold;font-size:9.5pt}
+  .footer-bar{border-top:2px solid ${GOLD};color:#888;padding:8px 0;font-size:8pt;margin-top:20px;text-align:center}
+  @page{margin:2.5cm}
+</style>
+</head><body>
+
+<!-- ═══════════════════════════════════════════════
+     LETTERHEAD PLACEHOLDER
+     Replace this section with your firm's letterhead
+═══════════════════════════════════════════════ -->
+<div style="border:2px dashed #aaa;padding:20px;text-align:center;margin-bottom:20px;
+  background:#f9f9f9;border-radius:4px">
+  <p style="font-size:13pt;font-weight:bold;color:#999;margin:0">[ INSERT LETTERHEAD HERE ]</p>
+  <p style="font-size:9pt;color:#bbb;margin:4px 0">
+    Replace this block with your firm / company letterhead before printing or sharing
+  </p>
+</div>
+<div style="text-align:center;margin-bottom:16px">
+  <p style="font-size:12pt;font-weight:bold;color:${NAVY};border-bottom:2px solid ${GOLD};
+    display:inline-block;padding-bottom:4px">
+    APPOINTMENT LETTER / OFFER LETTER
+  </p>
+</div>
+
+<div style="padding:0 4px">
+
+<!-- Date & Address -->
+<p style="text-align:right;margin-top:6px"><strong>Date:</strong> ${d.doj !== '—' ? d.doj : '_______________'}</p>
+<br>
+<p><strong>To,</strong><br>
+<strong style="font-size:12pt;color:${NAVY}">${d.name}</strong><br>
+${d.addr1 ? d.addr1 + '<br>' : '[Address Line 1]<br>'}
+${d.addr2 ? d.addr2 : '[City, State, PIN Code]'}</p>
+<br>
+<p><strong>Sub: Offer of Employment — ${d.desig}</strong></p>
+<p>Dear ${d.name.split(' ')[0]},</p>
+<p>With reference to your application and subsequent discussions, we are pleased to offer you employment with our organisation in the capacity of <strong>${d.desig}</strong> in the <strong>${d.dept}</strong> Department. This offer is subject to the terms and conditions set forth below.</p>
+
+<hr style="border:1px solid ${GOLD};margin:14px 0">
+
+<!-- 1. APPOINTMENT DETAILS -->
+<h2>1. APPOINTMENT DETAILS</h2>
+<table style="${tStyle}">
+  <tr><th style="${thStyle(LBLUE,NAVY)}">Parameter</th><th style="${thStyle(LBLUE,NAVY)}">Details</th></tr>
+  ${[
+    ['Designation',       d.desig],
+    ['Department',        d.dept],
+    ['Type of Employment',(()=>{const m={permanent:'Permanent Employee',fixedterm:'Fixed Term Employee (FTE)',contractlabour:'Contract Labour (via Contractor)',apprentice:'Apprentice (Apprentices Act 1961)',parttime:'Part-Time Employee',casual:'Casual / Daily Wage Worker'};return m[d.empType]||d.empType;})()],
+    ['Date of Joining',   d.doj],
+    ['Work Location',     (d.addr2||d.addr1) ? [d.addr1,d.addr2].filter(Boolean).join(', ') : 'As per appointment'],
+    ['UAN Number',        d.uan || '_______________'],
+    ['PAN Number',        d.pan || '_______________'],
+    ['Bank Name',         d.bank || '_______________'],
+    ['Bank Account No.',  d.accNo || '_______________'],
+    ['Nature of Employment','As per Type above — New Labour Code 2019'],
+    ['Probation Period',  'Six (6) months from date of joining'],
+    ['Working Hours',     '9:30 AM – 6:00 PM (Monday to Saturday)'],
+    ['Reporting To',      '[Manager / Partner Name]'],
+  ].map(([k,val])=>`<tr><td style="${tdS(LGRAY,true,NAVY)}">${k}</td><td style="${tdS()}">${val}</td></tr>`).join('')}
+</table>
+
+<!-- 2. CTC BREAKUP -->
+<h2>2. COMPENSATION STRUCTURE (CTC — Annual: ₹${fn(d.ctcA)})</h2>
+<table style="${tStyle}">
+  <tr>
+    <th style="${thStyle()}">Salary Component</th>
+    <th style="${thStyle()};text-align:right">Monthly (₹)</th>
+    <th style="${thStyle()};text-align:right">Annual (₹)</th>
+  </tr>
+  <tr><td colspan="3" class="section-hdr">A. EARNINGS / GROSS SALARY</td></tr>
+  ${d.earnings.map(e=>salRow(e.n, e.m, e.m*12)).join('')}
+  ${salRow('GROSS SALARY (A)', d.grossM, d.grossA, true)}
+  <tr><td colspan="3" class="section-hdr" style="background:#8B0000">B. EMPLOYEE DEDUCTIONS</td></tr>
+  ${d.deductions.map(e=>salRow(e.n, e.m, e.m*12, false, true)).join('')}
+  <tr>
+    <td style="${tdS(LGREEN,true,'#375623')}">💰 NET TAKE-HOME (A − B)</td>
+    <td style="${tdS(LGREEN,true,'#375623','right')}">${fn(d.takeHome)}</td>
+    <td style="${tdS(LGREEN,true,'#375623','right')}">${fn(d.thA)}</td>
+  </tr>
+  <tr><td colspan="3" class="section-hdr">C. EMPLOYER'S CONTRIBUTIONS</td></tr>
+  ${d.employerC.map(e=>salRow(e.n, e.m, e.m*12)).join('')}
+  ${salRow('TOTAL CTC (Gross + Employer Contribs)', d.ctcM, d.ctcA, true)}
+</table>
+<p style="font-size:9pt;color:#666;margin-top:6px">
+  Note: TDS will be deducted at source as per applicable income tax slabs under ${d.regime==='new'?'New':'Old'} Regime.
+  Individual components may be revised per applicable labour laws.
+</p>
+
+<!-- 3. TERMS & CONDITIONS -->
+<h2>3. TERMS &amp; CONDITIONS</h2>
+${[
+  '<strong>Probation Period:</strong> You will be on probation for six (6) months. Either party may terminate with seven (7) days\' written notice during this period.',
+  '<strong>Confirmation:</strong> Upon satisfactory performance, your appointment will be confirmed. Post-confirmation notice period: one (1) month on either side.',
+  '<strong>Confidentiality:</strong> You shall maintain strict confidentiality of all client data, business strategies, and firm information during and after employment.',
+  '<strong>Code of Conduct:</strong> You are expected to adhere to the firm\'s code of conduct, professional ethics, and ICAI guidelines at all times.',
+  '<strong>Statutory Compliance:</strong> All statutory deductions including EPF, ESI (if applicable), Professional Tax, LWF, and TDS shall be made as per applicable laws.',
+  '<strong>Leave Entitlement:</strong> 12 days Earned Leave + 6 days Casual Leave + applicable Sick Leave per annum as per firm policy.',
+  '<strong>Performance Review:</strong> Annual review. Salary revisions, if any, are at management\'s discretion.',
+  '<strong>Jurisdiction:</strong> Any disputes shall be subject to the exclusive jurisdiction of courts at Bhubaneswar, Odisha.',
+].map((t,i)=>`<p style="margin:6px 0;padding-left:14px">${i+1}. ${t}</p>`).join('')}
+
+<!-- 4. ACCEPTANCE -->
+<h2>4. ACCEPTANCE</h2>
+<p>Please sign and return a copy of this letter as token of your acceptance. This offer is valid for <strong>seven (7) days</strong> from date of issue.</p>
+
+<br><br>
+<!-- Signatures -->
+<table style="width:100%;border:none;margin-top:20px">
+  <tr>
+    <td style="width:50%;border:none;padding:0">
+      <div style="border-top:2px solid ${GOLD};padding-top:8px;width:90%">
+        <p><strong>For [Employer / Company Name]</strong><br>
+        <span style="color:#888;font-size:9pt">Authorised Signatory</span><br>
+        <span style="color:#aaa;font-size:8pt">Name: _______________</span><br>
+        <span style="color:#aaa;font-size:8pt">Date: _______________</span></p>
+      </div>
+    </td>
+    <td style="width:50%;border:none;padding:0">
+      <div style="border-top:2px solid ${GOLD};padding-top:8px;width:90%">
+        <p><strong>Accepted by Employee:</strong><br>
+        Name: ${d.name}<br>
+        Signature: _______________<br>
+        Date: _______________</p>
+      </div>
+    </td>
+  </tr>
+</table>
+
+</div><!-- /padding -->
+
+<div class="footer-bar">
+  Confidential &nbsp;|&nbsp; This document is system-generated &nbsp;|&nbsp;
+  Confidential &nbsp;|&nbsp; System Generated Document
+</div>
+</body></html>`;
+
+      // Convert to Word-compatible .doc using Blob with MS Word namespace
+      const wordHtml = `
+<html xmlns:o='urn:schemas-microsoft-com:office:office'
+      xmlns:w='urn:schemas-microsoft-com:office:word'
+      xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>Offer Letter</title>
+<!--[if gte mso 9]>
+<xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom>
+<w:DoNotOptimizeForBrowser/></w:WordDocument></xml>
+<![endif]-->
+<style>
+  body{font-family:Arial;font-size:10pt}
+  @page{margin:2cm}
+  table{border-collapse:collapse;width:100%}
+  td,th{font-family:Arial;font-size:10pt}
+</style>
+</head>
+<body>${html.replace(/<html.*?<body>/s,'').replace(/<\/body>.*?<\/html>/s,'')}</body></html>`;
+
+      const blob = new Blob(['\ufeff', wordHtml], {type:'application/msword'});
+      const fname = `Offer_Letter_${d.name.replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.doc`;
+      saveAs(blob, fname);
+
+    } catch(err) {
+      console.error(err);
+      alert('Word export failed: ' + err.message);
+    } finally {
+      hideLoader();
+    }
+  }, 100);
+}
+
+/* ═══════════════════════════════════════════════════
+   COPY SUMMARY
+═══════════════════════════════════════════════════ */
+function copySum() {
+  if (!D) { alert('Generate salary structure first.'); return; }
+  const d = D;
+  const txt = [
+    `SALARY STRUCTURE — ${d.name}`,
+    `Designation: ${d.desig} | Dept: ${d.dept}`,
+    `DOJ: ${d.doj} | ${d.monLabel}`,
+    `────────────────────────────────`,
+    `Annual CTC:       ${fi(d.ctcA)}`,
+    `Monthly Gross:    ${fi(d.grossM)}`,
+    `Net Take-Home:    ${fi(d.takeHome)}`,
+    `────────────────────────────────`,
+    `Basic Salary:     ${fi(d.basic)}/mo`,
+    `HRA:              ${fi(d.hra)}/mo`,
+    `EPF (Employee):   ${fi(d.empPF)}/mo`,
+    `Prof. Tax:        ${fi(d.pt)}/mo`,
+    `TDS (Monthly):    ${fi(d.monTDS)}/mo`,
+    `────────────────────────────────`,
+    `S P C A & Co., Chartered Accountants | Bhubaneswar`
+  ].join('\n');
+  navigator.clipboard.writeText(txt).then(() => alert('Summary copied to clipboard!'));
+}
+
+/* ═══════════════════════════════════════════════════
+   QUICK CALCULATORS
+═══════════════════════════════════════════════════ */
+function qCalc() {
+  const type = v('qtype').value;
+  const amt  = parseFloat(v('qamt').value);
+  const r    = v('qres');
+  if (!amt) { r.innerHTML = 'Enter amount above to see estimates.'; return; }
+  let html = '';
+  if (type === 'ctc') {
+    const gross = amt * 0.87; const th = gross * 0.88;
+    html = `Annual CTC: <b style="color:var(--gold)">${fi(amt)}</b><br>
+      Est. Annual Gross: <b style="color:var(--blue)">${fi(gross)}</b><br>
+      Est. Monthly Gross: <b style="color:var(--blue)">${fi(gross/12)}</b><br>
+      Est. Monthly Take-Home: <b style="color:var(--emerald)">${fi(th/12)}</b>`;
+  } else if (type === 'th') {
+    const ctc = amt * 12 / 0.76;
+    html = `Monthly Take-Home: <b style="color:var(--emerald)">${fi(amt)}</b><br>
+      Est. Annual CTC: <b style="color:var(--gold)">${fi(ctc)}</b><br>
+      Est. Monthly CTC: <b style="color:var(--gold)">${fi(ctc/12)}</b>`;
+  } else {
+    const ctc = amt / 0.87;
+    html = `Annual Gross: <b style="color:var(--blue)">${fi(amt)}</b><br>
+      Est. Annual CTC: <b style="color:var(--gold)">${fi(ctc)}</b><br>
+      Est. Monthly CTC: <b style="color:var(--gold)">${fi(ctc/12)}</b>`;
+  }
+  r.innerHTML = html;
+}
+
+function epfCalc() {
+  const b = parseFloat(v('epfB').value);
+  const r = v('epfRes');
+  if (!b) { r.innerHTML = 'Enter basic salary above.'; return; }
+  const cap = Math.min(b, 15000);
+  const emp = cap * 0.12;
+  const eps = Math.min(cap * 0.0833, 1250);
+  const epf = cap * 0.12 - eps;
+  const edli= Math.min(cap * 0.005, 75);
+  r.innerHTML = `PF Wage (cap ₹15,000): <b>${fi(cap)}/mo</b>${b>15000?' <span style="color:var(--gold);font-size:10px">(capped)</span>':''}<br>
+    Employee PF (12%): <b style="color:var(--red)">${fi(emp)}/mo</b><br>
+    Employer → EPF (3.67%): <b style="color:var(--blue)">${fi(epf)}/mo</b><br>
+    Employer → EPS (8.33%): <b style="color:var(--blue)">${fi(eps)}/mo</b><br>
+    Employer EDLI (0.5%): <b style="color:var(--blue)">${fi(edli)}/mo</b><br>
+    <b>Total Monthly PF Cost: <span style="color:var(--gold)">${fi(emp+epf+eps+edli)}/mo</span></b>`;
+}
+
+function ptCalc() {
+  const g = parseFloat(v('ptG').value);
+  const r = v('ptRes');
+  if (!g) { r.innerHTML = 'Enter gross salary above.'; return; }
+  const pt = getPT(g);
+  r.innerHTML = `Gross Monthly: <b>${fi(g)}</b><br>
+    Professional Tax: <b style="color:${pt?'var(--red)':'var(--emerald)'}">${fi(pt)}/month</b><br>
+    Annual PT: <b style="color:${pt?'var(--red)':'var(--emerald)'}">${fi(pt*12)}/year</b><br>
+    <span style="font-size:10px;color:var(--mut)">Deductible u/s 16 of IT Act | Max ₹2,400/year</span>`;
+}
+
+function gCalc() {
+  const b = parseFloat(v('gB').value);
+  const y = parseFloat(v('gY').value);
+  const r = v('gRes');
+  if (!b || !y) { r.innerHTML = 'Enter basic and years above.'; return; }
+  const g = b * 15/26 * Math.floor(y);
+  const taxFree = Math.min(g, 2000000);
+  r.innerHTML = `Gratuity Payable: <b style="color:var(--gold)">${fi(g)}</b><br>
+    Tax-Exempt (u/s 10(10)): <b style="color:var(--emerald)">${fi(taxFree)}</b><br>
+    Taxable Portion: <b style="color:var(--red)">${fi(Math.max(0,g-taxFree))}</b><br>
+    <span style="font-size:10px;color:var(--mut)">Formula: Basic × 15/26 × ${Math.floor(y)} years</span>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+(function init() {
+  v('doj').valueAsDate = new Date();
+  const n = new Date();
+  v('smon').value = `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}`;
+  // Default to FY 2026-27 since we are in April 2026
+  setFY('2627');
+})();
+</script>
+
+<!-- ══════════════════ SITE FOOTER — screen only, hidden on print ══════════════════ -->
+<footer class="site-footer">
+  <div class="ft-inner">
+
+    <!-- Left: Firm identity -->
+    <div class="ft-left">
+      <div class="firm-name">S P C A &amp; Co., Chartered Accountants</div>
+      <div class="firm-tagline">GST &nbsp;·&nbsp; Income Tax &nbsp;·&nbsp; Audit &nbsp;·&nbsp; RERA &nbsp;·&nbsp; Corporate Compliance &nbsp;·&nbsp; Project Finance</div>
+      <div class="firm-city">📍 Bhubaneswar, Odisha, India</div>
+    </div>
+
+    <!-- Right: Contact buttons -->
+    <div class="ft-right">
+
+      <!-- WhatsApp — Number 1 -->
+      <a class="ft-btn ft-wa" href="https://wa.me/917317315507" target="_blank" title="WhatsApp +91 73173 15507">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        +91 73173 15507
+      </a>
+
+      <!-- WhatsApp — Number 2 -->
+      <a class="ft-btn ft-wa" href="https://wa.me/919692156373" target="_blank" title="WhatsApp +91 96921 56373">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        +91 96921 56373
+      </a>
+
+      <!-- Email -->
+      <a class="ft-btn ft-mail" href="mailto:info@caspca.net" title="Email us">
+        ✉️ info@caspca.net
+      </a>
+
+      <!-- Website -->
+      <a class="ft-btn ft-web" href="https://www.caspca.net" target="_blank" title="Visit our website">
+        🌐 www.caspca.net
+      </a>
+
+    </div>
+  </div>
+  <div class="ft-copy">
+    © 2025-26 S P C A &amp; Co., Chartered Accountants. All rights reserved.
+    &nbsp;|&nbsp; For professional use only.
+  </div>
+</footer>
+
+</body>
+</html>
